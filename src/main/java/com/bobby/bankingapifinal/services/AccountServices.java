@@ -5,27 +5,32 @@ import com.bobby.bankingapifinal.repositories.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AccountServices {
 
+    @Autowired
     private AccountRepository accountRepository;
 
 
-    public List<Account> getAllAccount(Long id){
-        List<Account> accounts = new ArrayList<>();
-        accountRepository.findById(id);
-        return accounts;
+    public Optional<Account> getOneAccount(Long id){
+        return accountRepository.findById(id);
     }
 
-    public void addAccount(Account account){
-        accountRepository.save(account);
+    public Iterable<Account> getAllAccount(){
+        return accountRepository.findAll();
     }
 
-    public void updateAccont(Account account){
+    public Account addAccount(Account account){
         accountRepository.save(account);
+        return account;
+    }
+
+    public Account updateAccont(Account account){
+        accountRepository.save(account);
+        return account;
     }
 
     public void deleteAccount(Long id){
