@@ -1,7 +1,15 @@
 package com.bobby.bankingapifinal.domains;
 
+import com.sun.javafx.beans.IDProperty;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Deposit {
+    @Id
     private Long id;
+
     private String type;
     private String transactionDate;
     private String status;

@@ -1,7 +1,13 @@
 package com.bobby.bankingapifinal.domains;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Withdrawal {
+    @Id
     private Long id;
+
     private String type;
     private String transactionDate;
     private String status;

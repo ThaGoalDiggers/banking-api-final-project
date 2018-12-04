@@ -16,10 +16,6 @@ public class DepositServices {
     @Autowired
     private DepositRepository depositRepository;
 
-    private List<Deposit> deposits = Arrays.asList(
-            new Deposit(1234567890L, "bluh", "January 2", "Approved", 1234567890L, "Cash", 2000D, "aaaaaaa")
-    );
-
     public ResponseEntity<Iterable<Deposit>> getAllDeposits(){
         Iterable<Deposit> allWithdrawals = depositRepository.findAll();
         return new ResponseEntity<>(depositRepository.findAll(), HttpStatus.OK);
