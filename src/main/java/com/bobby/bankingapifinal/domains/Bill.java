@@ -69,4 +69,23 @@ public class Bill
 
 
 
+    @Override
+    public String toString()
+    {
+        return "Bill{" +
+                "id=" + id +
+                ", accountId='" + accountId + '\'' +
+                ", status='" + status + '\'' +
+                ", payee='" + payee + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", creationDate='" + creationDate + '\'' +
+                ", paymentDate='" + paymentDate + '\'' +
+                ", upcomingPaymentDate='" + upcomingPaymentDate + '\'' +
+                ", recurringDate=" + recurringDate +
+                ", paymentAmount=" + paymentAmount +
+                '}';
+    }
+
+
+
 }

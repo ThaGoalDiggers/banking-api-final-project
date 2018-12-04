@@ -2,12 +2,12 @@ package com.bobby.bankingapifinal.repositories;
 
 
 
-        import com.bobby.bankingapifinal.domains.Bill;
-        import org.springframework.data.repository.CrudRepository;
+import com.bobby.bankingapifinal.domains.Bill;
+import org.springframework.data.repository.CrudRepository;
 
 
 
-        import java.util.List;
+import java.util.List;
 
 
 
