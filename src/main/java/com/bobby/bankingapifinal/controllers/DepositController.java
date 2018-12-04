@@ -16,15 +16,18 @@ public class DepositController {
     @RequestMapping(method = RequestMethod.GET, value = "/accounts/{accountId}/deposits")
     public ResponseEntity<Iterable<Deposit>> getAllDeposits(){ return depositServices.getAllDeposits();}
 
+    //fix
     @RequestMapping(method = RequestMethod.GET, value = "/deposits/{depositId}")
     public ResponseEntity<?> getDepositById(@PathVariable Long id){ return depositServices.getDepositById(id);}
 
     @RequestMapping(method = RequestMethod.POST, value = "/accounts/{accountId}/deposits")
     public void createDeposit(@RequestBody Deposit deposit){ depositServices.createDeposit(deposit);}
 
+    //fix
     @RequestMapping(method = RequestMethod.PUT, value = "/deposits/{depositId}")
     public void updateDeposit(@RequestBody Deposit deposit, @PathVariable Long id){ depositServices.updateDeposit(deposit);}
 
+    //fix
     @RequestMapping(method = RequestMethod.DELETE, value = "/deposits/{depositId}")
     public void deleteDeposit(@PathVariable Long id){ depositServices.deleteDeposit(id);}
 }
