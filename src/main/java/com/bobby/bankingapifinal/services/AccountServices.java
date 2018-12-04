@@ -11,7 +11,6 @@ import java.util.List;
 @Service
 public class AccountServices {
 
-    @Autowired
     private AccountRepository accountRepository;
 
 
@@ -30,6 +29,6 @@ public class AccountServices {
     }
 
     public void deleteAccount(Long id){
-        accountRepository.delete(id);
+        accountRepository.deleteById(id);
     }
 }
