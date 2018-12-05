@@ -5,6 +5,8 @@ package com.bobby.bankingapifinal.controllers;
 import com.bobby.bankingapifinal.domains.Bill;
 import com.bobby.bankingapifinal.services.BillService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -24,39 +26,65 @@ public class BillController
 
 
 
-    @RequestMapping(method = RequestMethod.GET, value = "/accounts/{accountId}/bills")
+    @RequestMapping(value = "/accounts/{accountId}/bills", method = RequestMethod.GET)
     public List<Bill> getAllBillsByAccount(@PathVariable Long accountId)
     { return billService.getAllBillsByAccount(accountId); }
 
 
 
-    @RequestMapping(method = RequestMethod.GET, value = "/bills/{billId}")
+    @RequestMapping(value = "/bills/{billId}", method = RequestMethod.GET)
     public Optional<Bill> getBill(@PathVariable Long billId)
     { return billService.getBill(billId); }
 
 
 
-    @RequestMapping(method = RequestMethod.GET, value = "/customers/{customerId}/bills")
+    @RequestMapping(value = "/customers/{customerId}/bills", method = RequestMethod.GET)
     public List<Bill> getAllBillsByCustomer(@PathVariable Long customerId)
     { return billService.getAllBillsByCustomer(customerId); }
 
 
 
-    @RequestMapping(method = RequestMethod.POST, value = "/accounts/{accountId}/bills")
+    @RequestMapping(value = "/accounts/{accountId}/bills", method = RequestMethod.POST)
     public void addBill(@RequestBody Bill bill, @PathVariable Long accountId)
     { billService.addBill(bill); }
 
 
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/bills/{billId}")
-    public void updateBill(@RequestBody Bill bill, @PathVariable Long billId)
-    { billService.updateBill(bill); }
+    @RequestMapping(value = "/bills/{billId}", method = RequestMethod.PUT)
+    public ResponseEntity<?> updateBill(@RequestBody Bill bill, @PathVariable Long billId)
+    {
+        if(billService.getBill(billId) == null)
+        {
+            billService.addBill(bill);
+
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        }
+
+        else
+        {
+            billService.updateBill(bill);
+
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+    }
 
 
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/bills/{billId}")
-    public void deleteBill(@PathVariable Long billId)
-    { billService.deleteBill(billId); }
+    @RequestMapping(value = "/bills/{billId}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteBill(@PathVariable Long billId)
+    {
+        if(billService.getBill(billId) != null)
+        {
+            billService.deleteBill(billId);
+
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+
+        else
+        {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
 
 
