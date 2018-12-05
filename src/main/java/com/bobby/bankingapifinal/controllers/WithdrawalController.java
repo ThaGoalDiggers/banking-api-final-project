@@ -19,16 +19,16 @@ public class WithdrawalController {
 
     //fix
     @RequestMapping("/accounts/{accountId}/withdrawals/{withdrawalId}")
-    public ResponseEntity<?> getWithdrawalById(@PathVariable Long id){ return withdrawalServices.getWithdrawalById(id); }
+    public ResponseEntity<?> getWithdrawalById(@PathVariable Long withdrawalId, Long accountId){ return withdrawalServices.getWithdrawalById(withdrawalId); }
 
     @RequestMapping(method = RequestMethod.POST, value = "/accounts/{accountId}/withdrawals")
     public void createWithdrawal(@RequestBody Withdrawal withdrawal){ withdrawalServices.createWithdrawal(withdrawal); }
 
     //fix
     @RequestMapping(method = RequestMethod.PUT, value = "/accounts/{accountId}/withdrawals/{withdrawalId}")
-    public void updateWithdrawal(@RequestBody Withdrawal withdrawal, @PathVariable Long id){ withdrawalServices.updateWithdrawal(withdrawal);}
+    public void updateWithdrawal(@RequestBody Withdrawal withdrawal, @PathVariable Long withdrawalId, Long accountId){ withdrawalServices.updateWithdrawal(withdrawal);}
 
     //fix
     @RequestMapping(method = RequestMethod.DELETE, value = "/accounts/{accountId}/withdrawals/{withdrawalId}")
-    public void deleteWithdrawal(@PathVariable Long id){ withdrawalServices.deleteDeposit(id);}
+    public void deleteWithdrawal(@PathVariable Long withdrawalId, Long accountId){ withdrawalServices.deleteDeposit(withdrawalId);}
 }
