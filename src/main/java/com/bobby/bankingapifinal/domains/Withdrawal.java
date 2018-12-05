@@ -1,5 +1,9 @@
 package com.bobby.bankingapifinal.domains;
 
+import com.bobby.bankingapifinal.enumerations.WithdrawalMedium;
+import com.bobby.bankingapifinal.enumerations.WithdrawalStatus;
+import com.bobby.bankingapifinal.enumerations.WithdrawalType;
+
 import javax.persistence.*;
 
 @Entity
@@ -10,19 +14,22 @@ public class Withdrawal {
     private Long id;
 
     @Column(name = "WITHDRAWAL_TYPE")
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private WithdrawalType withdrawalType;
 
     @Column(name = "WITHDRAWAL_DATE")
     private String transactionDate;
 
     @Column(name = "WITHDRAWAL_STATUS")
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private WithdrawalStatus withdrawalStatus;
 
     @Column(name = "PAYER_ID")
     private Long payerId;
 
     @Column(name = "WITHDRAWAL_MEDIUM")
-    private String medium;
+    @Enumerated(EnumType.STRING)
+    private WithdrawalMedium withdrawalMedium;
 
     @Column(name = "WITHDRAWAL_AMOUNT")
     private Double amount;
@@ -33,15 +40,15 @@ public class Withdrawal {
     @ManyToOne
     private Account account;
 
-    public Withdrawal(Long id, String type, String transactionDate, String status, Long payerId, String medium, Double amount, String description) {
-        this.id = id;
-        this.type = type;
+    public Withdrawal(WithdrawalType withdrawalType, String transactionDate, WithdrawalStatus withdrawalStatus, Long payerId, WithdrawalMedium withdrawalMedium, Double amount, String description, Account account) {
+        this.withdrawalType = withdrawalType;
         this.transactionDate = transactionDate;
-        this.status = status;
+        this.withdrawalStatus = withdrawalStatus;
         this.payerId = payerId;
-        this.medium = medium;
+        this.withdrawalMedium = withdrawalMedium;
         this.amount = amount;
         this.description = description;
+        this.account = account;
     }
 
     public Withdrawal() {
@@ -55,12 +62,12 @@ public class Withdrawal {
         this.id = id;
     }
 
-    public String getType() {
-        return type;
+    public WithdrawalType getWithdrawalType() {
+        return withdrawalType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setWithdrawalType(WithdrawalType withdrawalType) {
+        this.withdrawalType = withdrawalType;
     }
 
     public String getTransactionDate() {
@@ -71,12 +78,12 @@ public class Withdrawal {
         this.transactionDate = transactionDate;
     }
 
-    public String getStatus() {
-        return status;
+    public WithdrawalStatus getWithdrawalStatus() {
+        return withdrawalStatus;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setWithdrawalStatus(WithdrawalStatus withdrawalStatus) {
+        this.withdrawalStatus = withdrawalStatus;
     }
 
     public Long getPayerId() {
@@ -87,12 +94,12 @@ public class Withdrawal {
         this.payerId = payerId;
     }
 
-    public String getMedium() {
-        return medium;
+    public WithdrawalMedium getWithdrawalMedium() {
+        return withdrawalMedium;
     }
 
-    public void setMedium(String medium) {
-        this.medium = medium;
+    public void setWithdrawalMedium(WithdrawalMedium withdrawalMedium) {
+        this.withdrawalMedium = withdrawalMedium;
     }
 
     public Double getAmount() {
@@ -111,17 +118,26 @@ public class Withdrawal {
         this.description = description;
     }
 
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+
     @Override
     public String toString() {
         return "Withdrawal{" +
                 "id=" + id +
-                ", type='" + type + '\'' +
+                ", withdrawalType=" + withdrawalType +
                 ", transactionDate='" + transactionDate + '\'' +
-                ", status='" + status + '\'' +
+                ", withdrawalStatus=" + withdrawalStatus +
                 ", payerId=" + payerId +
-                ", medium='" + medium + '\'' +
+                ", withdrawalMedium=" + withdrawalMedium +
                 ", amount=" + amount +
                 ", description='" + description + '\'' +
+                ", account=" + account +
                 '}';
     }
 }

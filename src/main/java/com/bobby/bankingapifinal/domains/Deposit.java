@@ -1,5 +1,8 @@
 package com.bobby.bankingapifinal.domains;
 
+import com.bobby.bankingapifinal.enumerations.DepositMedium;
+import com.bobby.bankingapifinal.enumerations.DepositStatus;
+import com.bobby.bankingapifinal.enumerations.DepositType;
 import com.sun.javafx.beans.IDProperty;
 
 import javax.persistence.*;
@@ -12,19 +15,22 @@ public class Deposit {
     private Long id;
 
     @Column(name = "DEPOSIT_TYPE")
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private DepositType depositType;
 
     @Column(name = "DEPOSIT_DATE")
     private String transactionDate;
 
     @Column(name = "DEPOSIT_STATUS")
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private DepositStatus depositStatus;
 
     @Column(name = "PAYEE_ID")
     private Long payeeId;
 
     @Column(name = "DEPOSIT_MEDIUM")
-    private String medium;
+    @Enumerated(EnumType.STRING)
+    private DepositMedium depositMedium;
 
     @Column(name = "DEPOSIT_AMOUNT")
     private Double amount;
@@ -35,15 +41,15 @@ public class Deposit {
     @ManyToOne
     private Account account;
 
-    public Deposit(Long id, String type, String transactionDate, String status, Long payeeId, String medium, Double amount, String description) {
-        this.id = id;
-        this.type = type;
+    public Deposit(DepositType depositType, String transactionDate, DepositStatus depositStatus, Long payeeId, DepositMedium depositMedium, Double amount, String description, Account account) {
+        this.depositType = depositType;
         this.transactionDate = transactionDate;
-        this.status = status;
+        this.depositStatus = depositStatus;
         this.payeeId = payeeId;
-        this.medium = medium;
+        this.depositMedium = depositMedium;
         this.amount = amount;
         this.description = description;
+        this.account = account;
     }
 
     public Deposit() {
@@ -57,12 +63,12 @@ public class Deposit {
         this.id = id;
     }
 
-    public String getType() {
-        return type;
+    public DepositType getDepositType() {
+        return depositType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setDepositType(DepositType depositType) {
+        this.depositType = depositType;
     }
 
     public String getTransactionDate() {
@@ -73,12 +79,12 @@ public class Deposit {
         this.transactionDate = transactionDate;
     }
 
-    public String getStatus() {
-        return status;
+    public DepositStatus getDepositStatus() {
+        return depositStatus;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setDepositStatus(DepositStatus depositStatus) {
+        this.depositStatus = depositStatus;
     }
 
     public Long getPayeeId() {
@@ -89,12 +95,12 @@ public class Deposit {
         this.payeeId = payeeId;
     }
 
-    public String getMedium() {
-        return medium;
+    public DepositMedium getDepositMedium() {
+        return depositMedium;
     }
 
-    public void setMedium(String medium) {
-        this.medium = medium;
+    public void setDepositMedium(DepositMedium depositMedium) {
+        this.depositMedium = depositMedium;
     }
 
     public Double getAmount() {
@@ -113,17 +119,26 @@ public class Deposit {
         this.description = description;
     }
 
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+
     @Override
     public String toString() {
         return "Deposit{" +
                 "id=" + id +
-                ", type='" + type + '\'' +
+                ", depositType=" + depositType +
                 ", transactionDate='" + transactionDate + '\'' +
-                ", status='" + status + '\'' +
+                ", depositStatus=" + depositStatus +
                 ", payeeId=" + payeeId +
-                ", medium='" + medium + '\'' +
+                ", depositMedium=" + depositMedium +
                 ", amount=" + amount +
                 ", description='" + description + '\'' +
+                ", account=" + account +
                 '}';
     }
 }
