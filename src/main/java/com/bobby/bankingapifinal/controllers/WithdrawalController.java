@@ -28,7 +28,7 @@ public class WithdrawalController {
     @RequestMapping(method = RequestMethod.PUT, value = "/accounts/{accountId}/withdrawals/{withdrawalId}")
     public void updateWithdrawal(@RequestBody Withdrawal withdrawal, @PathVariable Long withdrawalId, Long accountId){ withdrawalServices.updateWithdrawal(withdrawal);}
 
-    
+
     @RequestMapping(method = RequestMethod.DELETE, value = "/accounts/{accountId}/withdrawals/{withdrawalId}")
     public void deleteWithdrawal(@PathVariable Long withdrawalId, Long accountId){ withdrawalServices.deleteDeposit(withdrawalId);}
 }
