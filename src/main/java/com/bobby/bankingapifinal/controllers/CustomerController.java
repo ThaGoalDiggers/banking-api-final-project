@@ -4,10 +4,14 @@ import com.bobby.bankingapifinal.domains.Customer;
 import com.bobby.bankingapifinal.exceptions.ResourceNotFoundException;
 import com.bobby.bankingapifinal.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
+import java.net.URI;
 import java.util.Optional;
 
 @RestController
@@ -39,6 +43,18 @@ public class CustomerController {
 
 
     //create customer
+    @RequestMapping(value="/customers", method=RequestMethod.POST)
+    public ResponseEntity<?> createCustomer(@Valid @RequestBody Customer customer){
+        customerService.createCustomer(customer);
+        HttpHeaders responseHeaders = new HttpHeaders();
+        URI newcustomerUri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(customer.getId())
+                .toUri();
+       responseHeaders.setLocation(newcustomerUri);
+       return new ResponseEntity<>(null,responseHeaders,HttpStatus.CREATED);
+    }
 
 
 
