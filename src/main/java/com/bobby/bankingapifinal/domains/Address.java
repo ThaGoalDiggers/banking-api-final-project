@@ -9,7 +9,6 @@ import javax.persistence.Id;
 @Entity
 public class Address {
     @Id
-    @GeneratedValue
     @Column(name="ADDRESS_ID")
     private Long id;
     @Column(name="STREET_NUMBER")

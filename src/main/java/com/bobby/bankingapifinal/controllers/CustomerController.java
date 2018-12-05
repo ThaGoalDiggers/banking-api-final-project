@@ -33,7 +33,7 @@ public class CustomerController {
     }
 
 
-    //get customer by id now posts
+    //get customer by id
     @RequestMapping(value = "/customers/{customerId}",method = RequestMethod.GET)
     public  ResponseEntity<?> getCustomerbyId(@PathVariable Long customerId){
         Optional<Customer> customer = customerService.findbycustomerid(customerId);
@@ -58,14 +58,11 @@ public class CustomerController {
 
     }
 
-
-
     //update specific customer
-
-    @RequestMapping(value = "/customers/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value ="/customers/{customerid}", method = RequestMethod.PUT)
     public ResponseEntity<Object> updateCustomer(@RequestBody Customer customer, @PathVariable Long customerid){
-        customerService.updateCustomer(customer,customerid);
         verifyCustomer(customerid);
+        customerService.updateCustomer(customer,customerid);
       return new ResponseEntity<>(HttpStatus.OK);
     }
 
