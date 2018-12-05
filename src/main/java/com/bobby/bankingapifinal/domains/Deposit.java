@@ -2,21 +2,39 @@ package com.bobby.bankingapifinal.domains;
 
 import com.sun.javafx.beans.IDProperty;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Deposit {
     @Id
+    @GeneratedValue
+    @Column(name = "DEPOSIT_ID")
     private Long id;
 
+    @Column(name = "DEPOSIT_TYPE")
     private String type;
+
+    @Column(name = "DEPOSIT_DATE")
     private String transactionDate;
+
+    @Column(name = "DEPOSIT_STATUS")
     private String status;
+
+    @Column(name = "PAYEE_ID")
     private Long payeeId;
+
+    @Column(name = "DEPOSIT_MEDIUM")
     private String medium;
+
+    @Column(name = "DEPOSIT_AMOUNT")
     private Double amount;
+
+    @Column(name = "DEPOSIT_DESCRIPTION")
     private String description;
+
+    @ManyToOne
+    @JoinColumn(name = "ACCOUNT_ID")
+    private Account account;
 
     public Deposit(Long id, String type, String transactionDate, String status, Long payeeId, String medium, Double amount, String description) {
         this.id = id;

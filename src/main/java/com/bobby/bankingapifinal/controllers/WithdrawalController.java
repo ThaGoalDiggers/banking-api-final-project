@@ -14,21 +14,21 @@ public class WithdrawalController {
     @Autowired
     private WithdrawalServices withdrawalServices;
 
-    @RequestMapping("/accounts/{acountId}/withdrawals")
+    @RequestMapping("/accounts/{accountId}/withdrawals")
     public ResponseEntity<Iterable<Withdrawal>> getAllWithdrawals(){ return withdrawalServices.getAllWithdrawals(); }
 
     //fix
-    @RequestMapping("/withdrawals/{withdrawalId}")
+    @RequestMapping("/accounts/{accountId}/withdrawals/{withdrawalId}")
     public ResponseEntity<?> getWithdrawalById(@PathVariable Long id){ return withdrawalServices.getWithdrawalById(id); }
 
     @RequestMapping(method = RequestMethod.POST, value = "/accounts/{accountId}/withdrawals")
     public void createWithdrawal(@RequestBody Withdrawal withdrawal){ withdrawalServices.createWithdrawal(withdrawal); }
 
     //fix
-    @RequestMapping(method = RequestMethod.PUT, value = "/withdrawals/{withdrawalId}")
+    @RequestMapping(method = RequestMethod.PUT, value = "/accounts/{accountId}/withdrawals/{withdrawalId}")
     public void updateWithdrawal(@RequestBody Withdrawal withdrawal, @PathVariable Long id){ withdrawalServices.updateWithdrawal(withdrawal);}
 
     //fix
-    @RequestMapping(method = RequestMethod.DELETE, value = "/withdrawals/{withdrawalId}")
+    @RequestMapping(method = RequestMethod.DELETE, value = "/accounts/{accountId}/withdrawals/{withdrawalId}")
     public void deleteWithdrawal(@PathVariable Long id){ withdrawalServices.deleteDeposit(id);}
 }
