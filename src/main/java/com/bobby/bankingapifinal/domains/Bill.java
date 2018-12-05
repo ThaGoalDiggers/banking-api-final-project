@@ -48,6 +48,10 @@ public class Bill
     @JoinColumn(name = "ACCOUNT_ID")
     private Account account;
 
+    @ManyToOne
+    @JoinColumn(name = "CUSTOMER_ID")
+    private Customer customer;
+
 
 
     public Bill(){}
@@ -65,6 +69,7 @@ public class Bill
         this.recurringDate = recurringDate;
         this.paymentAmount = paymentAmount;
         this.account = account;
+        this.customer = account.getCustomer();
     }
 
 
@@ -79,8 +84,9 @@ public class Bill
     public Integer getRecurringDate() { return recurringDate; }
     public Double getPaymentAmount() { return paymentAmount; }
     public Account getAccount() { return account; }
+    public Customer getCustomer() { return customer; }
 
-    
+
     public void setStatus(String status) { this.status = status; }
     public void setPayee(String payee) { this.payee = payee; }
     public void setNickname(String nickname) { this.nickname = nickname; }

@@ -29,19 +29,19 @@ public class BillService
 
 
     //GET all bills for a specified account
-//    public List<Bill> getAllBillsByAccount(Long accountId)
-//    {
-//        System.out.println("getAllBillsByAccount method called");
-//
-//        List<Bill> bills = new ArrayList<>();
-//        System.out.println("bills ArrayList created");
-//
-//        billRepository.findByAccountId(accountId).forEach(bills::add);
-//        System.out.println("each bill from account #" + accountId + "added to bills ArrayList");
-//
-//        System.out.println("Bills: " + bills);
-//        return bills;
-//    }
+    public List<Bill> getAllBillsByAccount(Long accountId)
+    {
+        System.out.println("getAllBillsByAccount method called");
+
+        List<Bill> bills = new ArrayList<>();
+        System.out.println("bills ArrayList created");
+
+        billRepository.findByAccountId(accountId).forEach(bills::add);
+        System.out.println("each bill from account #" + accountId + "added to bills ArrayList");
+
+        System.out.println("Bills: " + bills);
+        return bills;
+    }
 
 
 
@@ -56,19 +56,19 @@ public class BillService
 
 
     //GET all bills for a customer
-//    public List<Bill> getAllBillsByCustomer(Long customerId)
-//    {
-//        System.out.println("getAllBillsByCustomer method called");
-//
-//        List<Bill> bills = new ArrayList<>();
-//        System.out.println("bills ArrayList created");
-//
-//        billRepository.findByCustomerId(customerId).forEach(bills::add);
-//        System.out.println("each bill for customer #" + customerId + "added to bills ArrayList");
-//
-//        System.out.println("Bills: " + bills);
-//        return bills;
-//    }
+    public List<Bill> getAllBillsByCustomer(Long customerId)
+    {
+        System.out.println("getAllBillsByCustomer method called");
+
+        List<Bill> bills = new ArrayList<>();
+        System.out.println("bills ArrayList created");
+
+        billRepository.findByCustomerId(customerId).forEach(bills::add);
+        System.out.println("each bill for customer #" + customerId + "added to bills ArrayList");
+
+        System.out.println("Bills: " + bills);
+        return bills;
+    }
 
 
 
