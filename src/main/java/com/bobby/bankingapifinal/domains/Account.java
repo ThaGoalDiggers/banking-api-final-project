@@ -1,9 +1,6 @@
 package com.bobby.bankingapifinal.domains;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Account {
@@ -25,7 +22,8 @@ public class Account {
     @Column(name = "BALANCE")
     private double balance;
 
-    @Column(name = "CUSTOMER")
+    @ManyToOne
+    @JoinColumn(name = "CUSTOMER_ID")
     private Customer customer;
 
     public Account() {
