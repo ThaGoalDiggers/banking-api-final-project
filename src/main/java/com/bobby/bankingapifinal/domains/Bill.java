@@ -1,12 +1,8 @@
 package com.bobby.bankingapifinal.domains;
+//This domain object was made by Derian
 
 
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-
+import javax.persistence.*;
 
 
 @Entity
@@ -20,17 +16,39 @@ public class Bill
     @Column(name = "bill_id")
     private Long id;
 
-    private String accountId;
+    @Column(name = "bill_status")
+    private String status;
 
-    private String status, payee, nickname, creationDate, paymentDate, upcomingPaymentDate;
+    @Column(name = "bill_payee")
+    private String payee;
+
+    @Column(name = "bill_nickname")
+    private String nickname;
+
+    @Column(name = "bill_creation_date")
+    private String creationDate;
+
+    @Column(name = "bill_payment_date")
+    private String paymentDate;
+
+    @Column(name = "bill_upcoming_payment_date")
+    private String upcomingPaymentDate;
+
+    @Column(name = "bill_recurring_date")
     private Integer recurringDate;
+
+    @Column(name = "bill_payment_amount")
     private Double paymentAmount;
+
+    @ManyToOne
+    @JoinColumn(name = "ACCOUNT_ID")
+    private Long accountId;
 
 
 
     public Bill(){}
 
-    public Bill(String accountId, String status, String payee, String nickname,
+    public Bill(Long accountId, String status, String payee, String nickname,
                 String creationDate, String paymentDate, String upcomingPaymentDate,
                 Integer recurringDate, Double paymentAmount)
     {
@@ -48,7 +66,7 @@ public class Bill
 
 
     public Long getId() { return id; }
-    public String getAccountId() { return accountId; }
+    public Long getAccountId() { return accountId; }
     public String getStatus() { return status; }
     public String getPayee() { return payee; }
     public String getNickname() { return nickname; }
