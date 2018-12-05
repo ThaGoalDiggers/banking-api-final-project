@@ -1,5 +1,7 @@
 package com.bobby.bankingapifinal.domains;
 
+import com.bobby.bankingapifinal.enumerations.AccountType;
+
 import javax.persistence.*;
 
 @Entity
@@ -11,7 +13,7 @@ public class Account {
     private Long id;
 
     @Column(name = "TYPE")
-    private Enum type;
+    private AccountType accountType;
 
     @Column(name = "NICKNAME")
     private String nickName;
@@ -29,9 +31,8 @@ public class Account {
     public Account() {
     }
 
-    public Account(Long id, Enum type, String nickName, Integer rewards, double balance, Customer customer) {
-        this.id = id;
-        this.type = type;
+    public Account(AccountType accountType, String nickName, Integer rewards, double balance, Customer customer) {
+        this.accountType = accountType;
         this.nickName = nickName;
         this.rewards = rewards;
         this.balance = balance;
@@ -46,12 +47,12 @@ public class Account {
         this.id = id;
     }
 
-    public Enum getType() {
-        return type;
+    public AccountType getAccountType() {
+        return accountType;
     }
 
-    public void setType(Enum type) {
-        this.type = type;
+    public void setAccountType(AccountType accountType) {
+        this.accountType = accountType;
     }
 
     public String getNickName() {
@@ -90,7 +91,7 @@ public class Account {
     public String toString() {
         return "Account{" +
                 "id=" + id +
-                ", type=" + type +
+                ", accountType=" + accountType +
                 ", nickName='" + nickName + '\'' +
                 ", rewards=" + rewards +
                 ", balance=" + balance +
