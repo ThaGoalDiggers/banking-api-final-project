@@ -22,6 +22,7 @@ public class AccountController {
     public Account createAccount(@RequestBody Account account, @PathVariable Long id){
         return accountServices.addAccount(account);
     }
+
     @RequestMapping(value = "/accounts/{accountId}", method = RequestMethod.PUT)
     public Account updateAccount(@RequestBody Account account, @PathVariable Long id){
         return accountServices.updateAccont(account);
