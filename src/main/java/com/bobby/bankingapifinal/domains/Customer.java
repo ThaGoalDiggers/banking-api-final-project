@@ -24,15 +24,13 @@ public class Customer {
     private String lastName;
 
 
-    @OneToOne
-    @JoinColumn(name = "CUSTOMER_ID")
+    @ManyToOne
     @OrderBy
-    @Size(min = 1,max = 1)
-    private Set<Address> address;
+    private Address address;
 
     public Customer(){}
 
-    public Customer( String firstName, String lastName, Set<Address> address) {
+    public Customer( String firstName, String lastName, Address address) {
 
         this.firstName = firstName;
         this.lastName = lastName;
@@ -63,11 +61,11 @@ public class Customer {
         this.lastName = lastName;
     }
 
-    public Set<Address> getAddress() {
+    public Address getAddress() {
         return address;
     }
 
-    public void setAddress(Set<Address> address) {
+    public void setAddress(Address address) {
         this.address = address;
     }
 
