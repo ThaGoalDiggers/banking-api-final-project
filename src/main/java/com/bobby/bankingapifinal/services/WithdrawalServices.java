@@ -16,10 +16,6 @@ public class WithdrawalServices {
     @Autowired
     private WithdrawalRepository withdrawalRepository;
 
-    private List<Withdrawal> withdrawals = Arrays.asList(
-            new Withdrawal(1234567890L, "bluh", "January 2", "Approved", 1234567890L, "Cash", 2000D, "aaaaaaa")
-    );
-
     public ResponseEntity<Iterable<Withdrawal>> getAllWithdrawals(){
         Iterable<Withdrawal> allWithdrawals = withdrawalRepository.findAll();
         return new ResponseEntity<>(withdrawalRepository.findAll(), HttpStatus.OK);
