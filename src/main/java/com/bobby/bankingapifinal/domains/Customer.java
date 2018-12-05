@@ -24,7 +24,7 @@ public class Customer {
     private String lastName;
 
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @OrderBy
     private Address address;
 

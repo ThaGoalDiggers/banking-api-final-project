@@ -23,7 +23,7 @@ public class Address {
     @Column(name="ZIP")
     private String zip;
 
-    public Address(String s, String birch, String city, String state, String zip){}
+    public Address(){}
 
     public Address(String street, String streetNumber, String streetname, String city) {
         this.id = id;
