@@ -1,0 +1,33 @@
+package com.bobby.bankingapifinal.controllers;
+
+import com.bobby.bankingapifinal.domains.Deposit;
+import com.bobby.bankingapifinal.services.DepositServices;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+public class DepositController {
+    @Autowired
+    private DepositServices depositServices;
+
+    @RequestMapping(method = RequestMethod.GET, value = "/accounts/{accountId}/deposits")
+    public ResponseEntity<Iterable<Deposit>> getAllDeposits(){ return depositServices.getAllDeposits();}
+
+    //fix
+    @RequestMapping(method = RequestMethod.GET, value = "/deposits/{depositId}")
+    public ResponseEntity<?> getDepositById(@PathVariable Long id){ return depositServices.getDepositById(id);}
+
+    @RequestMapping(method = RequestMethod.POST, value = "/accounts/{accountId}/deposits")
+    public void createDeposit(@RequestBody Deposit deposit){ depositServices.createDeposit(deposit);}
+
+    //fix
+    @RequestMapping(method = RequestMethod.PUT, value = "/deposits/{depositId}")
+    public void updateDeposit(@RequestBody Deposit deposit, @PathVariable Long id){ depositServices.updateDeposit(deposit);}
+
+    //fix
+    @RequestMapping(method = RequestMethod.DELETE, value = "/deposits/{depositId}")
+    public void deleteDeposit(@PathVariable Long id){ depositServices.deleteDeposit(id);}
+}
