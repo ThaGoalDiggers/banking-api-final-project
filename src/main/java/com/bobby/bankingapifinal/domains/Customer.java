@@ -24,8 +24,8 @@ public class Customer {
     private String lastName;
 
 
-    @ManyToOne(fetch = FetchType.LAZY,optional = false)
-    @JoinColumn(name = "CUSTOMER_ID", nullable = false)
+    @OneToOne
+    @JoinColumn(name = "CUSTOMER_ID")
     private Set<Address> address;
 
     public Customer(){}
