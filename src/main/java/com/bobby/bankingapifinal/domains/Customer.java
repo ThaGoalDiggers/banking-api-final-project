@@ -26,6 +26,8 @@ public class Customer {
 
     @OneToOne
     @JoinColumn(name = "CUSTOMER_ID")
+    @OrderBy
+    @Size(min = 1,max = 1)
     private Set<Address> address;
 
     public Customer(){}
