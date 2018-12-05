@@ -2,6 +2,8 @@ package com.bobby.bankingapifinal.domains;
 //This domain object was made by Derian
 
 
+import com.bobby.bankingapifinal.enumerations.BillStatus;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
@@ -19,7 +21,8 @@ public class Bill
 
     @Column(name = "bill_status")
     @NotEmpty
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private BillStatus status;
 
     @Column(name = "bill_payee")
     private String payee;
@@ -56,7 +59,7 @@ public class Bill
 
     public Bill(){}
 
-    public Bill(String status, String payee, String nickname,
+    public Bill(BillStatus status, String payee, String nickname,
                 String creationDate, String paymentDate, String upcomingPaymentDate,
                 Integer recurringDate, Double paymentAmount, Account account)
     {
@@ -75,7 +78,7 @@ public class Bill
 
 
     public Long getId() { return id; }
-    public String getStatus() { return status; }
+    public BillStatus getStatus() { return status; }
     public String getPayee() { return payee; }
     public String getNickname() { return nickname; }
     public String getCreationDate() { return creationDate; }
@@ -87,7 +90,7 @@ public class Bill
     public Customer getCustomer() { return customer; }
 
 
-    public void setStatus(String status) { this.status = status; }
+    public void setStatus(BillStatus status) { this.status = status; }
     public void setPayee(String payee) { this.payee = payee; }
     public void setNickname(String nickname) { this.nickname = nickname; }
     public void setPaymentDate(String paymentDate) { this.paymentDate = paymentDate; }
