@@ -33,8 +33,8 @@ public class CustomerController {
     }
 
 
-    //get customer by id
-    @RequestMapping(value = "/customers/{id} ",method = RequestMethod.GET)
+    //get customer by id now posts
+    @RequestMapping(value = "/customers/{customerId}",method = RequestMethod.GET)
     public  ResponseEntity<?> getCustomerbyId(@PathVariable Long customerId){
         Optional<Customer> customer = customerService.findbycustomerid(customerId);
         verifyCustomer(customerId);
@@ -44,16 +44,18 @@ public class CustomerController {
 
     //create customer
     @RequestMapping(value="/customers", method=RequestMethod.POST)
-    public ResponseEntity<?> createCustomer(@Valid @RequestBody Customer customer){
+    public ResponseEntity<?> createCustomer( @RequestBody Customer customer){
         customerService.createCustomer(customer);
         HttpHeaders responseHeaders = new HttpHeaders();
-        URI newcustomerUri = ServletUriComponentsBuilder
+        URI newCustomerUri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(customer.getId())
                 .toUri();
-       responseHeaders.setLocation(newcustomerUri);
-       return new ResponseEntity<>(null,responseHeaders,HttpStatus.CREATED);
+        responseHeaders.setLocation(newCustomerUri);
+        return new ResponseEntity<>(null, responseHeaders, HttpStatus.CREATED);
+
+
     }
 
 
