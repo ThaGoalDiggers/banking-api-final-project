@@ -1,42 +1,48 @@
 package com.bobby.bankingapifinal.services;
 
-import com.bobby.bankingapifinal.domains.Address;
 import com.bobby.bankingapifinal.domains.Customer;
 import com.bobby.bankingapifinal.repositories.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Optional;
 
 @Service
 public class CustomerService {
 
-
-  public Set<Address> addies = new HashSet<Address>(Arrays.asList(
-          new Address("street","3232","cityy","zip")
-
-  ));
+    @Autowired
+    private CustomerRepository customerRepository;
 
 
-
-    public List<Customer> customers = new ArrayList<>(Arrays.asList(
-
-            new Customer("zach","rivera",addies)
-    ));
+    //Get Customer by account
 
 
-    //GET ALL
-    public List<Customer> getAllCustomer(){
-        return customers;
-    }
 
-    //GET ONE
-    public Customer getCustomerbyID(Long customerid){
-        return customers.stream().filter(c -> c.getId().equals(customerid)).findFirst().get();
+    //Get all
+    public Iterable<Customer> getallcustomers(){
+        return customerRepository.findAll();
     }
 
 
-   //
+    //Get one
+
+    public Optional<Customer> findbycustomerid(Long customerId){
+        return customerRepository.findById(customerId);
+    }
+
+    //Create Customer
+    public void createCustomer(Customer customer){
+        customerRepository.save(customer);
+    }
+
+    //Update Customer
+    public Customer updateCustomer (Customer customer, Long customerId){
+            customerRepository.save(customer);
+        return customer;
+    }
+
+
+
 
 
 }
