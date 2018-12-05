@@ -3,6 +3,7 @@ package com.bobby.bankingapifinal.domains;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 
 
 @Entity
@@ -17,6 +18,7 @@ public class Bill
     private Long id;
 
     @Column(name = "bill_status")
+    @NotEmpty
     private String status;
 
     @Column(name = "bill_payee")
@@ -26,9 +28,11 @@ public class Bill
     private String nickname;
 
     @Column(name = "bill_creation_date")
+    @NotEmpty
     private String creationDate;
 
     @Column(name = "bill_payment_date")
+    @NotEmpty
     private String paymentDate;
 
     @Column(name = "bill_upcoming_payment_date")
@@ -40,16 +44,19 @@ public class Bill
     @Column(name = "bill_payment_amount")
     private Double paymentAmount;
 
-    private Long accountId;
+    @ManyToOne
+    @JoinColumn(name = "ACCOUNT_ID")
+    private Account account;
 
-    private Long customerId;
+    private Long accountId = this.account.getId();
+    private Long customerId = this.account.getCustomer().getId();
 
 
     public Bill(){}
 
     public Bill(String status, String payee, String nickname,
                 String creationDate, String paymentDate, String upcomingPaymentDate,
-                Integer recurringDate, Double paymentAmount, Long accountId, Long customerId)
+                Integer recurringDate, Double paymentAmount, Account account)
     {
         this.status = status;
         this.payee = payee;
@@ -59,8 +66,7 @@ public class Bill
         this.upcomingPaymentDate = upcomingPaymentDate;
         this.recurringDate = recurringDate;
         this.paymentAmount = paymentAmount;
-        this.accountId = accountId;
-        this.customerId = customerId;
+        this.account = account;
     }
 
 
@@ -74,6 +80,7 @@ public class Bill
     public String getUpcomingPaymentDate() { return upcomingPaymentDate; }
     public Integer getRecurringDate() { return recurringDate; }
     public Double getPaymentAmount() { return paymentAmount; }
+    public Account getAccount() { return account; }
     public Long getAccountId() { return accountId; }
     public Long getCustomerId() { return customerId; }
 
@@ -91,8 +98,7 @@ public class Bill
 
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "Bill{" +
                 "id=" + id +
                 ", status='" + status + '\'' +
@@ -103,6 +109,7 @@ public class Bill
                 ", upcomingPaymentDate='" + upcomingPaymentDate + '\'' +
                 ", recurringDate=" + recurringDate +
                 ", paymentAmount=" + paymentAmount +
+                ", account=" + account +
                 ", accountId=" + accountId +
                 ", customerId=" + customerId +
                 '}';
