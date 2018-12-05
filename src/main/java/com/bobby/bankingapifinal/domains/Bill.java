@@ -48,8 +48,6 @@ public class Bill
     @JoinColumn(name = "ACCOUNT_ID")
     private Account account;
 
-    private Long accountId = this.account.getId();
-    private Long customerId = this.account.getCustomer().getId();
 
 
     public Bill(){}
@@ -81,9 +79,8 @@ public class Bill
     public Integer getRecurringDate() { return recurringDate; }
     public Double getPaymentAmount() { return paymentAmount; }
     public Account getAccount() { return account; }
-    public Long getAccountId() { return accountId; }
-    public Long getCustomerId() { return customerId; }
 
+    
     public void setStatus(String status) { this.status = status; }
     public void setPayee(String payee) { this.payee = payee; }
     public void setNickname(String nickname) { this.nickname = nickname; }
@@ -110,8 +107,6 @@ public class Bill
                 ", recurringDate=" + recurringDate +
                 ", paymentAmount=" + paymentAmount +
                 ", account=" + account +
-                ", accountId=" + accountId +
-                ", customerId=" + customerId +
                 '}';
     }
 

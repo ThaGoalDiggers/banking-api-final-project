@@ -26,9 +26,9 @@ public class BillController
 
 
 
-    @RequestMapping(value = "/accounts/{accountId}/bills", method = RequestMethod.GET)
-    public List<Bill> getAllBillsByAccount(@PathVariable Long accountId)
-    { return billService.getAllBillsByAccount(accountId); }
+//    @RequestMapping(value = "/accounts/{accountId}/bills", method = RequestMethod.GET)
+//    public List<Bill> getAllBillsByAccount(@PathVariable Long accountId)
+//    { return billService.getAllBillsByAccount(accountId); }
 
 
 
@@ -38,9 +38,9 @@ public class BillController
 
 
 
-    @RequestMapping(value = "/customers/{customerId}/bills", method = RequestMethod.GET)
-    public List<Bill> getAllBillsByCustomer(@PathVariable Long customerId)
-    { return billService.getAllBillsByCustomer(customerId); }
+//    @RequestMapping(value = "/customers/{customerId}/bills", method = RequestMethod.GET)
+//    public List<Bill> getAllBillsByCustomer(@PathVariable Long customerId)
+//    { return billService.getAllBillsByCustomer(customerId); }
 
 
 
