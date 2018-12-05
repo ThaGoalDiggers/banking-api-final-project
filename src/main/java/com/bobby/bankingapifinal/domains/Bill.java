@@ -40,8 +40,6 @@ public class Bill
     @Column(name = "bill_payment_amount")
     private Double paymentAmount;
 
-    @ManyToOne
-    @JoinColumn(name = "ACCOUNT_ID")
     private Long accountId;
 
 
