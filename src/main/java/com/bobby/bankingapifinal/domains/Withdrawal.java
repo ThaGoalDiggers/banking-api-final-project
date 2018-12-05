@@ -1,20 +1,38 @@
 package com.bobby.bankingapifinal.domains;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Withdrawal {
     @Id
+    @GeneratedValue
+    @Column(name = "WITHDRAWAL_ID")
     private Long id;
 
+    @Column(name = "WITHDRAWAL_TYPE")
     private String type;
+
+    @Column(name = "WITHDRAWAL_DATE")
     private String transactionDate;
+
+    @Column(name = "WITHDRAWAL_STATUS")
     private String status;
+
+    @Column(name = "PAYER_ID")
     private Long payerId;
+
+    @Column(name = "WITHDRAWAL_MEDIUM")
     private String medium;
+
+    @Column(name = "WITHDRAWAL_AMOUNT")
     private Double amount;
+
+    @Column(name = "WITHDRAWAL_DESCRIPTION")
     private String description;
+
+    @ManyToOne
+    @JoinColumn(name = "WITHDRAWAL_ID")
+    private Account account;
 
     public Withdrawal(Long id, String type, String transactionDate, String status, Long payerId, String medium, Double amount, String description) {
         this.id = id;
