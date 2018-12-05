@@ -42,15 +42,15 @@ public class Bill
 
     private Long accountId;
 
+    private Long customerId;
 
 
     public Bill(){}
 
-    public Bill(Long accountId, String status, String payee, String nickname,
+    public Bill(String status, String payee, String nickname,
                 String creationDate, String paymentDate, String upcomingPaymentDate,
-                Integer recurringDate, Double paymentAmount)
+                Integer recurringDate, Double paymentAmount, Long accountId, Long customerId)
     {
-        this.accountId = accountId;
         this.status = status;
         this.payee = payee;
         this.nickname = nickname;
@@ -59,12 +59,13 @@ public class Bill
         this.upcomingPaymentDate = upcomingPaymentDate;
         this.recurringDate = recurringDate;
         this.paymentAmount = paymentAmount;
+        this.accountId = accountId;
+        this.customerId = customerId;
     }
 
 
 
     public Long getId() { return id; }
-    public Long getAccountId() { return accountId; }
     public String getStatus() { return status; }
     public String getPayee() { return payee; }
     public String getNickname() { return nickname; }
@@ -73,6 +74,8 @@ public class Bill
     public String getUpcomingPaymentDate() { return upcomingPaymentDate; }
     public Integer getRecurringDate() { return recurringDate; }
     public Double getPaymentAmount() { return paymentAmount; }
+    public Long getAccountId() { return accountId; }
+    public Long getCustomerId() { return customerId; }
 
     public void setStatus(String status) { this.status = status; }
     public void setPayee(String payee) { this.payee = payee; }
@@ -92,7 +95,6 @@ public class Bill
     {
         return "Bill{" +
                 "id=" + id +
-                ", accountId='" + accountId + '\'' +
                 ", status='" + status + '\'' +
                 ", payee='" + payee + '\'' +
                 ", nickname='" + nickname + '\'' +
@@ -101,6 +103,8 @@ public class Bill
                 ", upcomingPaymentDate='" + upcomingPaymentDate + '\'' +
                 ", recurringDate=" + recurringDate +
                 ", paymentAmount=" + paymentAmount +
+                ", accountId=" + accountId +
+                ", customerId=" + customerId +
                 '}';
     }
 
