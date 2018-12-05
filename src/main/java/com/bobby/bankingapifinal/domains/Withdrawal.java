@@ -31,7 +31,7 @@ public class Withdrawal {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "ACCOUNT_ID")
+    @JoinColumn(name = "WITHDRAWAL_ID")
     private Account account;
 
     public Withdrawal(Long id, String type, String transactionDate, String status, Long payerId, String medium, Double amount, String description) {

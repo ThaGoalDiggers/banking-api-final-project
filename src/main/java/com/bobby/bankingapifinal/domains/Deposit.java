@@ -33,7 +33,7 @@ public class Deposit {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "ACCOUNT_ID")
+    @JoinColumn(name = "DEPOSIT_ID")
     private Account account;
 
     public Deposit(Long id, String type, String transactionDate, String status, Long payeeId, String medium, Double amount, String description) {
