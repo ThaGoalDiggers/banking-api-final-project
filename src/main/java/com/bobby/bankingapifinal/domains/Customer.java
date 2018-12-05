@@ -9,20 +9,23 @@ import java.util.Set;
 //Class Completed
 @Entity
 public class Customer {
-   @Id
+
+    @Id
    @GeneratedValue
    @Column(name="CUSTOMER_ID")
     private Long id;
-    @Column(name="FIRST_NAME")
+
+   @Column(name="FIRST_NAME")
     @NotEmpty
     private String firstName;
+
     @Column(name = "LAST_NAME")
     @NotEmpty
     private String lastName;
-    @OneToMany(cascade=CascadeType.ALL)
-    @JoinColumn(name="CUSTOMER_ID")
-    @OrderBy
-    @Size(min = 2,max = 6)
+
+
+    @ManyToOne(fetch = FetchType.LAZY,optional = false)
+    @JoinColumn(name = "CUSTOMER_ID", nullable = false)
     private Set<Address> address;
 
     public Customer(){}
