@@ -23,11 +23,11 @@ public class DepositController {
     @RequestMapping(method = RequestMethod.POST, value = "/accounts/{accountId}/deposits")
     public void createDeposit(@RequestBody Deposit deposit){ depositServices.createDeposit(deposit);}
 
-    //fix
+
     @RequestMapping(method = RequestMethod.PUT, value = "/accounts/{accountId}/deposits/{depositId}")
     public void updateDeposit(@RequestBody Deposit deposit, @PathVariable Long depositId, Long accountId){ depositServices.updateDeposit(deposit);}
 
-    //fix
+
     @RequestMapping(method = RequestMethod.DELETE, value = "/accounts/{accountId}/deposits/{depositId}")
     public void deleteDeposit(@PathVariable Long depositId, Long accountId){ depositServices.deleteDeposit(depositId);}
 }
