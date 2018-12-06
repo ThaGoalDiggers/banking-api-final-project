@@ -5,11 +5,14 @@ package com.bobby.bankingapifinal.controllers;
 import com.bobby.bankingapifinal.domains.Bill;
 import com.bobby.bankingapifinal.services.BillService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,26 +30,45 @@ public class BillController
 
 
     @RequestMapping(value = "/accounts/{accountId}/bills", method = RequestMethod.GET)
-    public List<Bill> getAllBillsByAccount(@PathVariable Long accountId)
-    { return billService.getAllBillsByAccount(accountId); }
+    public ResponseEntity<Iterable<Bill>> getAllBillsByAccount(@PathVariable Long accountId)
+    {
+        Iterable<Bill> bills = billService.getAllBillsByAccount(accountId);
+        return new ResponseEntity<>(bills, HttpStatus.OK);
+    }
 
 
 
     @RequestMapping(value = "/bills/{billId}", method = RequestMethod.GET)
-    public Optional<Bill> getBill(@PathVariable Long billId)
-    { return billService.getBill(billId); }
+    public ResponseEntity<?> getBill(@PathVariable Long billId)
+    {
+        Optional<Bill> bill = billService.getBill(billId);
+        return new ResponseEntity<>(bill, HttpStatus.OK);
+    }
 
 
 
     @RequestMapping(value = "/customers/{customerId}/bills", method = RequestMethod.GET)
-    public List<Bill> getAllBillsByCustomer(@PathVariable Long customerId)
-    { return billService.getAllBillsByCustomer(customerId); }
+    public ResponseEntity<?> getAllBillsByCustomer(@PathVariable Long customerId)
+    {
+        List<Bill> bills = billService.getAllBillsByCustomer(customerId);
+        return new ResponseEntity<>(bills, HttpStatus.OK);
+    }
 
 
 
     @RequestMapping(value = "/accounts/{accountId}/bills", method = RequestMethod.POST)
-    public void addBill(@RequestBody Bill bill, @PathVariable Long accountId)
-    { billService.addBill(bill); }
+    public ResponseEntity<?> addBill(@RequestBody Bill bill, @PathVariable Long accountId)
+    {
+        billService.addBill(bill);
+        HttpHeaders responseHeaders = new HttpHeaders();
+        URI newBillUri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(bill.getId())
+                .toUri();
+        responseHeaders.setLocation(newBillUri);
+        return new ResponseEntity<>(null, responseHeaders, HttpStatus.CREATED);
+    }
 
 
 
@@ -57,14 +79,14 @@ public class BillController
         {
             billService.addBill(bill);
 
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            return new ResponseEntity<>(bill, HttpStatus.OK);
         }
 
         else
         {
             billService.updateBill(bill);
 
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(bill, HttpStatus.OK);
         }
     }
 
@@ -73,17 +95,9 @@ public class BillController
     @RequestMapping(value = "/bills/{billId}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteBill(@PathVariable Long billId)
     {
-        if(billService.getBill(billId) != null)
-        {
             billService.deleteBill(billId);
 
             return new ResponseEntity<>(HttpStatus.OK);
-        }
-
-        else
-        {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
     }
 
 
