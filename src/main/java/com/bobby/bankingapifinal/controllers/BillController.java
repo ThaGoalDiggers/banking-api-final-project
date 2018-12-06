@@ -73,6 +73,9 @@ public class BillController
     @RequestMapping(value = "/accounts/{accountId}/bills", method = RequestMethod.POST)
     public ResponseEntity<?> addBill(@RequestBody Bill bill, @PathVariable Long accountId)
     {
+
+        verifyAccount(accountId);
+
         billService.addBill(bill);
         HttpHeaders responseHeaders = new HttpHeaders();
         URI newBillUri = ServletUriComponentsBuilder
