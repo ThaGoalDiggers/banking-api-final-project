@@ -27,14 +27,12 @@ public class AccountServices {
         return accountRepository.findAll();
     }
 
-    public Account addAccount(Account account){
+    public void addAccount(Account account){
         accountRepository.save(account);
-        return account;
     }
 
-    public Account updateAccont(Account account){
+    public void updateAccont(Account account){
         accountRepository.save(account);
-        return account;
     }
 
     public void deleteAccount(Long id){
