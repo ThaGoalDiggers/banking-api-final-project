@@ -1,7 +1,9 @@
 package com.bobby.bankingapifinal.controllers;
 
+import com.bobby.bankingapifinal.domains.Account;
 import com.bobby.bankingapifinal.domains.Deposit;
 import com.bobby.bankingapifinal.exceptions.ResourceNotFoundException;
+import com.bobby.bankingapifinal.services.AccountServices;
 import com.bobby.bankingapifinal.services.DepositServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -19,8 +21,13 @@ public class DepositController {
     @Autowired
     private DepositServices depositServices;
 
+    @Autowired
+    private AccountServices accountServices;
+
     @RequestMapping(method = RequestMethod.GET, value = "/accounts/{accountId}/deposits")
-    public ResponseEntity<Iterable<Deposit>> getAllDeposits(){
+    public ResponseEntity<Iterable<Deposit>> getAllDeposits(Long accountId){
+        verifyAccount(accountId);
+
         Iterable<Deposit> deposits = depositServices.getAllDeposits();
 
         return new ResponseEntity<>(deposits, HttpStatus.OK);
@@ -36,7 +43,9 @@ public class DepositController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/accounts/{accountId}/deposits")
-    public ResponseEntity<?> createDeposit(@RequestBody Deposit deposit){
+    public ResponseEntity<?> createDeposit(@RequestBody Deposit deposit, Long accountId){
+        verifyAccount(accountId);
+
         depositServices.createDeposit(deposit);
 
         HttpHeaders responseHeaders = new HttpHeaders();
@@ -74,6 +83,16 @@ public class DepositController {
         System.out.println(deposit);
         if(deposit == (null)){
             throw new ResourceNotFoundException("Deposit with id " + depositId + " not found.");
+        }
+    }
+
+    protected void verifyAccount(Long accountId) throws ResourceNotFoundException
+    {
+        Account account = accountServices.getOneAccount(accountId).isPresent() ? accountServices.getOneAccount(accountId).get() : null;
+        System.out.println(account);
+        if(account == (null))
+        {
+            throw new ResourceNotFoundException("Account with id " + accountId + " not found");
         }
     }
 }
