@@ -2,9 +2,13 @@ package com.bobby.bankingapifinal.controllers;
 //This controller was made by Derian
 
 
+import com.bobby.bankingapifinal.domains.Account;
 import com.bobby.bankingapifinal.domains.Bill;
+import com.bobby.bankingapifinal.domains.Customer;
 import com.bobby.bankingapifinal.exceptions.ResourceNotFoundException;
+import com.bobby.bankingapifinal.services.AccountServices;
 import com.bobby.bankingapifinal.services.BillService;
+import com.bobby.bankingapifinal.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -28,11 +32,18 @@ public class BillController
     @Autowired
     private BillService billService;
 
+    @Autowired
+    private AccountServices accountService;
+
+    @Autowired
+    private CustomerService customerService;
+
 
 
     @RequestMapping(value = "/accounts/{accountId}/bills", method = RequestMethod.GET)
     public ResponseEntity<Iterable<Bill>> getAllBillsByAccount(@PathVariable Long accountId)
     {
+        verifyAccount(accountId);
         Iterable<Bill> bills = billService.getAllBillsByAccount(accountId);
         return new ResponseEntity<>(bills, HttpStatus.OK);
     }
@@ -52,6 +63,7 @@ public class BillController
     @RequestMapping(value = "/customers/{customerId}/bills", method = RequestMethod.GET)
     public ResponseEntity<?> getAllBillsByCustomer(@PathVariable Long customerId)
     {
+        verifyCustomer(customerId);
         List<Bill> bills = billService.getAllBillsByCustomer(customerId);
         return new ResponseEntity<>(bills, HttpStatus.OK);
     }
@@ -69,7 +81,7 @@ public class BillController
                 .buildAndExpand(bill.getId())
                 .toUri();
         responseHeaders.setLocation(newBillUri);
-        return new ResponseEntity<>(null, responseHeaders, HttpStatus.CREATED);
+        return new ResponseEntity<>(bill, responseHeaders, HttpStatus.CREATED);
     }
 
 
@@ -107,6 +119,30 @@ public class BillController
         if(bill == (null))
         {
             throw new ResourceNotFoundException("Bill with id " + billId + " not found");
+        }
+    }
+
+
+
+    protected void verifyAccount(Long accountId) throws ResourceNotFoundException
+    {
+        Account account = accountService.getOneAccount(accountId).isPresent() ? accountService.getOneAccount(accountId).get() : null;
+        System.out.println(account);
+        if(account == (null))
+        {
+            throw new ResourceNotFoundException("Account with id " + accountId + " not found");
+        }
+    }
+
+
+
+    protected void verifyCustomer(Long customerId) throws ResourceNotFoundException
+    {
+        Customer customer = customerService.findbycustomerid(customerId).isPresent() ? customerService.findbycustomerid(customerId).get() : null;
+        System.out.println(customer);
+        if(customer == (null))
+        {
+            throw new ResourceNotFoundException("Customer with id " + customerId + " not found");
         }
     }
 
