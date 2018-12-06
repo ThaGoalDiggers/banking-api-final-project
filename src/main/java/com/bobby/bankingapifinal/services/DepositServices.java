@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DepositServices {
@@ -16,14 +17,12 @@ public class DepositServices {
     @Autowired
     private DepositRepository depositRepository;
 
-    public ResponseEntity<Iterable<Deposit>> getAllDeposits(){
-        Iterable<Deposit> allWithdrawals = depositRepository.findAll();
-        return new ResponseEntity<>(depositRepository.findAll(), HttpStatus.OK);
+    public Iterable<Deposit> getAllDeposits(){
+        return depositRepository.findAll();
     }
 
-    public ResponseEntity<?> getDepositById(Long id){
-        depositRepository.findById(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public Optional<Deposit> getDepositById(Long id){
+        return depositRepository.findById(id);
     }
 
     public void createDeposit(Deposit deposit){
