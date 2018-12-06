@@ -27,7 +27,6 @@ public class Customer {
    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
    @OrderBy
    @Size(min = 1,max = 10)
-   @Column(name = "ADDRESS")
     private Set<Address> address;
 
     public Customer(){}

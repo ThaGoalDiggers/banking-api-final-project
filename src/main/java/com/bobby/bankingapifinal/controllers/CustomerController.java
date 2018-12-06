@@ -1,7 +1,9 @@
 package com.bobby.bankingapifinal.controllers;
 
+import com.bobby.bankingapifinal.domains.Account;
 import com.bobby.bankingapifinal.domains.Customer;
 import com.bobby.bankingapifinal.exceptions.ResourceNotFoundException;
+import com.bobby.bankingapifinal.services.AccountServices;
 import com.bobby.bankingapifinal.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -10,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.validation.Valid;
 import java.net.URI;
 import java.util.Optional;
 
@@ -18,10 +19,15 @@ import java.util.Optional;
 public class CustomerController {
     @Autowired
     private CustomerService customerService;
+    private AccountServices accountServices;
 
     //Get customer by account
-
-
+    @RequestMapping(value = "/accounts/{accountId}/customer",method = RequestMethod.GET)
+    public ResponseEntity<Optional<Account>> findCustomerByAccountId(Long accountId){
+        Optional<Account> a = accountServices.getOneAccount(accountId);
+        a.get().getCustomer();
+        return new ResponseEntity<Optional<Account>>(a, HttpStatus.NOT_FOUND);
+    }
 
 
 
