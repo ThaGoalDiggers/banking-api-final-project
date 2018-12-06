@@ -31,7 +31,7 @@ public class AccountServices {
         accountRepository.save(account);
     }
 
-    public void updateAccont(Account account){
+    public void updateAccount(Account account, Long accountId){
         accountRepository.save(account);
     }
 

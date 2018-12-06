@@ -39,7 +39,7 @@ public class AccountController {
 
     @RequestMapping(value = "/accounts/{accountId}", method = RequestMethod.PUT)
     public void updateAccount(@RequestBody Account account, @PathVariable Long accountId){
-        accountServices.updateAccont(account);
+        accountServices.updateAccount(account, accountId);
     }
 
     @RequestMapping(value = "/accounts/{accountId}", method = RequestMethod.GET)
