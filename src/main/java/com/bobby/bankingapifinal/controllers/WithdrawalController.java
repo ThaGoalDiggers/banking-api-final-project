@@ -1,6 +1,7 @@
 package com.bobby.bankingapifinal.controllers;
 
 import com.bobby.bankingapifinal.domains.Withdrawal;
+import com.bobby.bankingapifinal.exceptions.ResourceNotFoundException;
 import com.bobby.bankingapifinal.services.WithdrawalServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -29,6 +30,8 @@ public class WithdrawalController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/accounts/{accountId}/withdrawals/{withdrawalId}")
     public ResponseEntity<?> getWithdrawalById(@PathVariable Long withdrawalId, Long accountId){
+        verifyWithdrawal(withdrawalId);
+
         Optional<Withdrawal> withdrawals = withdrawalServices.getWithdrawalById(withdrawalId);
 
         return new ResponseEntity<>(withdrawals, HttpStatus.OK);
@@ -51,6 +54,8 @@ public class WithdrawalController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/accounts/{accountId}/withdrawals/{withdrawalId}")
     public ResponseEntity<?> updateWithdrawal(@RequestBody Withdrawal withdrawal, @PathVariable Long withdrawalId, Long accountId){
+        verifyWithdrawal(withdrawalId);
+
         withdrawalServices.updateWithdrawal(withdrawal);
 
         return new ResponseEntity<>(withdrawal, HttpStatus.OK);
@@ -59,9 +64,19 @@ public class WithdrawalController {
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/accounts/{accountId}/withdrawals/{withdrawalId}")
     public ResponseEntity<?> deleteWithdrawal(@PathVariable Long withdrawalId, Long accountId){
+        verifyWithdrawal(withdrawalId);
+
         withdrawalServices.deleteDeposit(withdrawalId);
 
         return new ResponseEntity<>(HttpStatus.OK);
 
+    }
+
+    protected void verifyWithdrawal(Long withdrawalId) throws ResourceNotFoundException {
+        Withdrawal withdrawal = withdrawalServices.getWithdrawalById(withdrawalId).isPresent() ? withdrawalServices.getWithdrawalById(withdrawalId).get() : null;
+        System.out.println(withdrawal);
+        if(withdrawal == (null)){
+            throw new ResourceNotFoundException("Withdrawal with id " + withdrawalId + " not found.");
+        }
     }
 }
