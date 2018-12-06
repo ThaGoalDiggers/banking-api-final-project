@@ -3,6 +3,7 @@ package com.bobby.bankingapifinal.controllers;
 
 
 import com.bobby.bankingapifinal.domains.Bill;
+import com.bobby.bankingapifinal.exceptions.ResourceNotFoundException;
 import com.bobby.bankingapifinal.services.BillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -41,6 +42,7 @@ public class BillController
     @RequestMapping(value = "/bills/{billId}", method = RequestMethod.GET)
     public ResponseEntity<?> getBill(@PathVariable Long billId)
     {
+        verifyBill(billId);
         Optional<Bill> bill = billService.getBill(billId);
         return new ResponseEntity<>(bill, HttpStatus.OK);
     }
@@ -75,19 +77,13 @@ public class BillController
     @RequestMapping(value = "/bills/{billId}", method = RequestMethod.PUT)
     public ResponseEntity<?> updateBill(@RequestBody Bill bill, @PathVariable Long billId)
     {
-        if(billService.getBill(billId) == null)
-        {
-            billService.addBill(bill);
 
-            return new ResponseEntity<>(bill, HttpStatus.OK);
-        }
+        verifyBill(billId);
 
-        else
-        {
-            billService.updateBill(bill);
+        billService.updateBill(bill, billId);
 
-            return new ResponseEntity<>(bill, HttpStatus.OK);
-        }
+        return new ResponseEntity<>(bill, HttpStatus.OK);
+
     }
 
 
@@ -95,9 +91,23 @@ public class BillController
     @RequestMapping(value = "/bills/{billId}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteBill(@PathVariable Long billId)
     {
-            billService.deleteBill(billId);
+        verifyBill(billId);
 
-            return new ResponseEntity<>(HttpStatus.OK);
+        billService.deleteBill(billId);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
+
+    protected void verifyBill(Long billId) throws ResourceNotFoundException
+    {
+        Bill bill = billService.getBill(billId).isPresent() ? billService.getBill(billId).get() : null;
+        System.out.println(bill);
+        if(bill == (null))
+        {
+            throw new ResourceNotFoundException("Bill with id " + billId + " not found");
+        }
     }
 
 
