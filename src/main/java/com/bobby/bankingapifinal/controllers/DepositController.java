@@ -25,7 +25,7 @@ public class DepositController {
     private AccountServices accountServices;
 
     @RequestMapping(method = RequestMethod.GET, value = "/accounts/{accountId}/deposits")
-    public ResponseEntity<Iterable<Deposit>> getAllDeposits(Long accountId){
+    public ResponseEntity<Iterable<Deposit>> getAllDeposits(@PathVariable Long accountId){
         verifyAccount(accountId);
 
         Iterable<Deposit> deposits = depositServices.getAllDeposits();
@@ -43,7 +43,7 @@ public class DepositController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/accounts/{accountId}/deposits")
-    public ResponseEntity<?> createDeposit(@RequestBody Deposit deposit, Long accountId){
+    public ResponseEntity<?> createDeposit(@RequestBody Deposit deposit, @PathVariable Long accountId){
         verifyAccount(accountId);
 
         depositServices.createDeposit(deposit);
