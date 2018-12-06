@@ -18,7 +18,7 @@ public class AccountController {
     private AccountServices accountServices;
 
 
-    @RequestMapping(value = "/accounts/{accountId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/customers/accounts", method = RequestMethod.POST)
     public Account createAccount(@RequestBody Account account, @PathVariable Long id){
         return accountServices.addAccount(account);
     }
@@ -41,6 +41,11 @@ public class AccountController {
     @RequestMapping(value = "/accounts/{accountId}", method = RequestMethod.DELETE)
     public void deleteAccount(@PathVariable Long id){
         accountServices.deleteAccount(id);
+    }
+
+    @RequestMapping(value = "/customer/{customerId}/accounts", method = RequestMethod.GET)
+    public Optional<Account> getAccountByCustomerID(@PathVariable Long customerId){
+        return accountServices.getAccountByCustomerId(customerId);
     }
 
 

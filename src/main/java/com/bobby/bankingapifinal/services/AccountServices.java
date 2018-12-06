@@ -5,7 +5,6 @@ import com.bobby.bankingapifinal.repositories.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -13,6 +12,11 @@ public class AccountServices {
 
     @Autowired
     private AccountRepository accountRepository;
+
+
+    public Optional<Account> getAccountByCustomerId(Long customerId){
+        return accountRepository.findById(customerId);
+    }
 
 
     public Optional<Account> getOneAccount(Long id){
