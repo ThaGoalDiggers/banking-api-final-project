@@ -1,6 +1,8 @@
 package com.bobby.bankingapifinal.services;
 
+import com.bobby.bankingapifinal.domains.Account;
 import com.bobby.bankingapifinal.domains.Customer;
+import com.bobby.bankingapifinal.repositories.AccountRepository;
 import com.bobby.bankingapifinal.repositories.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,9 +14,11 @@ public class CustomerService {
 
     @Autowired
     private CustomerRepository customerRepository;
+    private AccountServices accountServices;
 
 
     //Get Customer by account
+
 
 
 
