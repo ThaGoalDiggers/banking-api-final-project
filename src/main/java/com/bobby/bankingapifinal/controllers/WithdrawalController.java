@@ -1,7 +1,9 @@
 package com.bobby.bankingapifinal.controllers;
 
+import com.bobby.bankingapifinal.domains.Account;
 import com.bobby.bankingapifinal.domains.Withdrawal;
 import com.bobby.bankingapifinal.exceptions.ResourceNotFoundException;
+import com.bobby.bankingapifinal.services.AccountServices;
 import com.bobby.bankingapifinal.services.WithdrawalServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -20,8 +22,13 @@ public class WithdrawalController {
     @Autowired
     private WithdrawalServices withdrawalServices;
 
+    @Autowired
+    private AccountServices accountServices;
+
     @RequestMapping(method = RequestMethod.GET, value = "/accounts/{accountId}/withdrawals")
-    public ResponseEntity<Iterable<Withdrawal>> getAllWithdrawals(){
+    public ResponseEntity<Iterable<Withdrawal>> getAllWithdrawals(Long accountId){
+        verifyAccount(accountId);
+
         Iterable<Withdrawal> withdrawals = withdrawalServices.getAllWithdrawals();
 
         return new ResponseEntity<>(withdrawals, HttpStatus.OK);
@@ -38,7 +45,9 @@ public class WithdrawalController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/accounts/{accountId}/withdrawals")
-    public ResponseEntity<?> createWithdrawal(@RequestBody Withdrawal withdrawal){
+    public ResponseEntity<?> createWithdrawal(@RequestBody Withdrawal withdrawal, Long accountId){
+        verifyAccount(accountId);
+
         withdrawalServices.createWithdrawal(withdrawal);
 
         HttpHeaders responseHeaders = new HttpHeaders();
@@ -77,6 +86,16 @@ public class WithdrawalController {
         System.out.println(withdrawal);
         if(withdrawal == (null)){
             throw new ResourceNotFoundException("Withdrawal with id " + withdrawalId + " not found.");
+        }
+    }
+
+    protected void verifyAccount(Long accountId) throws ResourceNotFoundException
+    {
+        Account account = accountServices.getOneAccount(accountId).isPresent() ? accountServices.getOneAccount(accountId).get() : null;
+        System.out.println(account);
+        if(account == (null))
+        {
+            throw new ResourceNotFoundException("Account with id " + accountId + " not found");
         }
     }
 }
