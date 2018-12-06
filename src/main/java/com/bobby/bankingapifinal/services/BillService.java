@@ -85,11 +85,14 @@ public class BillService
 
 
     //PUT a bill (update)
-    public void updateBill(Bill bill)
+    public void updateBill(Bill bill, Long billId)
     {
         System.out.println("updateBill method called");
 
-        billRepository.save(bill);
+        for(Bill b : billRepository.findAll())
+        {
+            if(b.getId() == billId) billRepository.save(bill);
+        }
 
         System.out.println("bill updated");
     }

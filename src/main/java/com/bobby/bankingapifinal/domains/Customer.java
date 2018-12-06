@@ -24,14 +24,14 @@ public class Customer {
     private String lastName;
 
 
-    @ManyToOne
-    @OrderBy
-    private Address address;
+   @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+   @OrderBy
+   @Size(min = 1,max = 10)
+    private Set<Address> address;
 
     public Customer(){}
 
-    public Customer( String firstName, String lastName, Address address) {
-
+    public Customer(@NotEmpty String firstName, @NotEmpty String lastName, @Size(min = 1, max = 10) Set<Address> address) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -61,11 +61,11 @@ public class Customer {
         this.lastName = lastName;
     }
 
-    public Address getAddress() {
+    public Set<Address> getAddress() {
         return address;
     }
 
-    public void setAddress(Address address) {
+    public void setAddress(Set<Address> address) {
         this.address = address;
     }
 

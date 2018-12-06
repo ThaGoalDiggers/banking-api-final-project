@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class WithdrawalServices {
@@ -16,14 +17,12 @@ public class WithdrawalServices {
     @Autowired
     private WithdrawalRepository withdrawalRepository;
 
-    public ResponseEntity<Iterable<Withdrawal>> getAllWithdrawals(){
-        Iterable<Withdrawal> allWithdrawals = withdrawalRepository.findAll();
-        return new ResponseEntity<>(withdrawalRepository.findAll(), HttpStatus.OK);
+    public Iterable<Withdrawal> getAllWithdrawals(){
+        return withdrawalRepository.findAll();
     }
 
-    public ResponseEntity<?> getWithdrawalById(Long id){
-        withdrawalRepository.findById(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public Optional<Withdrawal> getWithdrawalById(Long id){
+        return withdrawalRepository.findById(id);
     }
 
     public void createWithdrawal(Withdrawal withdrawal){

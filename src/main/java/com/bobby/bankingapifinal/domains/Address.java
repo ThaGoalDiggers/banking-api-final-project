@@ -1,29 +1,34 @@
 package com.bobby.bankingapifinal.domains;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 //Class Completed
 @Entity
 public class Address {
     @Id
-    @GeneratedValue
     @Column(name="ADDRESS_ID")
     private Long id;
+
     @Column(name="STREET_NUMBER")
     private String streetNumber;
+
     @Column(name="STREET_NAME")
     private String streetname;
+
     @Column(name="CITY")
     private String city;
+
     @Column(name="STATE")
     private String state;
+
     @Column(name="ZIP")
     private String zip;
 
-    public Address(String s, String birch, String city, String state, String zip){}
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "CUSTOMER_ID")
+    private Customer customer;
+
+    public Address(){}
 
     public Address(String street, String streetNumber, String streetname, String city) {
         this.id = id;
