@@ -30,7 +30,7 @@ public class AccountController {
 
     @RequestMapping(value = "/customers/{customerId}/accounts", method = RequestMethod.POST)
     public ResponseEntity<?> createAccount(@RequestBody Account account, @PathVariable Long customerId){
-        account.setCustomer(customerService.findByCustomerId(customerId).orElse(null));
+        account.setCustomer(customerService.getOneCustomerById(customerId).orElse(null));
         HttpHeaders httpHeaders = new HttpHeaders();
         URI newAccountUri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
