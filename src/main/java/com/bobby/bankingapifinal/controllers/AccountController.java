@@ -2,9 +2,10 @@ package com.bobby.bankingapifinal.controllers;
 
 
 import com.bobby.bankingapifinal.domains.Account;
+import com.bobby.bankingapifinal.domains.Customer;
 import com.bobby.bankingapifinal.repositories.AccountRepository;
 import com.bobby.bankingapifinal.services.AccountServices;
-import org.hibernate.validator.constraints.pl.REGON;
+import com.bobby.bankingapifinal.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -23,10 +24,13 @@ public class AccountController {
     @Autowired
     private AccountServices accountServices;
 
+    @Autowired
+    private CustomerService customerService;
 
-    @RequestMapping(value = "/customers/accounts", method = RequestMethod.POST)
-    public ResponseEntity<?> createAccount(@RequestBody Account account){
-        accountServices.addAccount(account);
+
+    @RequestMapping(value = "/customers/{customerId}/accounts", method = RequestMethod.POST)
+    public ResponseEntity<?> createAccount(@RequestBody Account account, @PathVariable Long customerId){
+        account.setCustomer(customerService.findbycustomerid(customerId).orElse(null));
         HttpHeaders httpHeaders = new HttpHeaders();
         URI newAccountUri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -34,71 +38,65 @@ public class AccountController {
                 .buildAndExpand(account.getId())
                 .toUri();
         httpHeaders.setLocation(newAccountUri);
-        return new ResponseEntity<>(null,HttpStatus.CREATED);
+        return new ResponseEntity<>(account,httpHeaders,HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/accounts/{accountId}", method = RequestMethod.PUT)
-    public void updateAccount(@RequestBody Account account, @PathVariable Long accountId){
-        accountServices.updateAccount(account, accountId);
+    @RequestMapping(value = "/customers/{customerId}/accounts/{accountId}", method = RequestMethod.PUT)
+    public ResponseEntity<?> updateAccount(@RequestBody Account account, @PathVariable Long accountId, @PathVariable Long customerId){
+        for (Customer c: customerService.getallcustomers())
+        {
+            if (c.getId().equals(customerId)) accountServices.updateAccount(account, accountId);
+        }
+        HttpHeaders httpHeaders = new HttpHeaders();
+        URI newAccountUri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(account.getId())
+                .toUri();
+        httpHeaders.setLocation(newAccountUri);
+        return new ResponseEntity<>(account,httpHeaders,HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/accounts/{accountId}", method = RequestMethod.GET)
-    public Optional<Account> getOneAccount(@PathVariable Long accountId){
-        return accountServices.getOneAccount(accountId);
+    @RequestMapping(value = "/customers/{customerId}/accounts/{accountId}", method = RequestMethod.GET)
+    public ResponseEntity<?> getOneAccount(@PathVariable Long accountId,@PathVariable Long customerId){
+        List<Account> accounts = accountServices.getAllAccounts(customerId);
+
+        Account account = null;
+        for (Account ac:accounts)
+        {
+            if(accountId.equals(ac.getId())) account = ac;
+        }
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        URI newAccountUri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(account.getId())
+                .toUri();
+        httpHeaders.setLocation(newAccountUri);
+        return new ResponseEntity<>(account,httpHeaders,HttpStatus.OK);
     }
 
-    @Autowired
-    private AccountRepository accountRepository;
 
-    @RequestMapping(value = "/accounts", method = RequestMethod.GET)
-    public ResponseEntity<Iterable<Account>> getAllAccount(){
-        Iterable<Account> allAccounts = accountRepository.findAll();
-        return new ResponseEntity<>(allAccounts, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/accounts/{accountId}", method = RequestMethod.DELETE)
-    public void deleteAccount(@PathVariable Long accountId){
+    @RequestMapping(value = "/customers/{customerId}/accounts/{accountId}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteAccount(@PathVariable Long accountId, @PathVariable Long customerId){
         accountServices.deleteAccount(accountId);
     }
 
-    @RequestMapping(value = "/customer/{customerId}/accounts", method = RequestMethod.GET)
-    public Optional<Account> getAccountByCustomerID(@PathVariable Long customerId){
-        return accountServices.getAccountByCustomerId(customerId);
+    @RequestMapping(value = "/customers/{customerId}/accounts", method = RequestMethod.GET)
+    public ResponseEntity<?> getAccountByCustomerID(@PathVariable Long customerId){
+        List<Account> accounts = accountServices.getAllAccounts(customerId);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        URI newAccountUri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(accounts)
+                .toUri();
+        httpHeaders.setLocation(newAccountUri);
+        return new ResponseEntity<>(accounts,httpHeaders,HttpStatus.CREATED);
     }
 
 
-//[
-//    {
-//        "id": 1,
-//            "accountType": "SAVINGS",
-//            "nickName": "Tsavage",
-//            "rewards": 20,
-//            "balance": 20.000,
-//            "customer":{
-//        "firstName": "Zach",
-//                "lastName": "Rivera",
-//                "address":[
-//        {
-//            "id":1,
-//                "streetNumber": "701",
-//                "streetname": "Birchwood dr",
-//                "city": "Newark",
-//                "state":"DE",
-//                "zip":"19713"
-//        },
-//        {
-//            "id":2,
-//                "streetNumber": "7",
-//                "streetname": "Birch",
-//                "city": "New",
-//                "state":"DE",
-//                "zip":"19713"
-//        }
-//        ]
-//
-//    }
-//   }
-//]
 
 
 }
