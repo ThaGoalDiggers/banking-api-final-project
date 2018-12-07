@@ -8,6 +8,7 @@ import java.util.Set;
 
 //Class Completed
 @Entity
+@Table(name = "CUSTOMER_TABLE")
 public class Customer {
 
     @Id
@@ -41,9 +42,6 @@ public class Customer {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getFirstName() {
         return firstName;
