@@ -1,9 +1,7 @@
 package com.bobby.bankingapifinal.controllers;
 
-import com.bobby.bankingapifinal.domains.Account;
 import com.bobby.bankingapifinal.domains.Customer;
 import com.bobby.bankingapifinal.exceptions.ResourceNotFoundException;
-import com.bobby.bankingapifinal.services.AccountServices;
 import com.bobby.bankingapifinal.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -19,32 +17,30 @@ import java.util.Optional;
 public class CustomerController {
     @Autowired
     private CustomerService customerService;
-    private AccountServices accountServices;
-
-    //Get customer by account
-    @RequestMapping(value = "/accounts/{accountId}/customer",method = RequestMethod.GET)
-    public ResponseEntity<Optional<Account>> findCustomerByAccountId(Long accountId){
-        Optional<Account> a = accountServices.getOneAccount(accountId);
-        a.get().getCustomer();
-        return new ResponseEntity<Optional<Account>>(a, HttpStatus.NOT_FOUND);
-    }
-
 
 
    //Get all customers
     @RequestMapping(value = "/customers",method = RequestMethod.GET)
     public ResponseEntity<Iterable<Customer>> getCustomers(){
-        Iterable<Customer> allcustomers = customerService.getallcustomers();
-            return new ResponseEntity<>(allcustomers, HttpStatus.OK);
+        Iterable<Customer> allCustomers = customerService.getallCustomers();
+            return new ResponseEntity<>(allCustomers, HttpStatus.OK);
     }
 
 
     //get customer by id
     @RequestMapping(value = "/customers/{customerId}",method = RequestMethod.GET)
-    public  ResponseEntity<?> getCustomerbyId(@PathVariable Long customerId){
-        Optional<Customer> customer = customerService.findbycustomerid(customerId);
+    public  ResponseEntity<?> getCustomerById(@PathVariable Long customerId){
         verifyCustomer(customerId);
-        return new ResponseEntity<>(customer, HttpStatus.OK);
+        Optional<Customer> customer = customerService.findByCustomerId(customerId);
+        HttpHeaders responseHeaders = new HttpHeaders();
+        URI newCustomerUri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(customer.get().getId())
+                .toUri();
+        responseHeaders.setLocation(newCustomerUri);
+
+        return new ResponseEntity<>(customer,responseHeaders, HttpStatus.OK);
     }
 
 
@@ -59,7 +55,7 @@ public class CustomerController {
                 .buildAndExpand(customer.getId())
                 .toUri();
         responseHeaders.setLocation(newCustomerUri);
-        return new ResponseEntity<>(null, responseHeaders, HttpStatus.CREATED);
+        return new ResponseEntity<>(customer, responseHeaders, HttpStatus.CREATED);
 
 
     }
@@ -75,7 +71,7 @@ public class CustomerController {
 
     //Error checker
     protected void verifyCustomer(Long customerId)  {
-        Optional<Customer> customer = customerService.findbycustomerid(customerId);
+        Optional<Customer> customer = customerService.findByCustomerId(customerId);
         if(customer.equals(Optional.empty())) {
             throw new ResourceNotFoundException("Customer with id " + customerId + " not found");
         }

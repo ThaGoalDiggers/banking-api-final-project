@@ -14,23 +14,22 @@ public class CustomerService {
 
     @Autowired
     private CustomerRepository customerRepository;
-    private AccountServices accountServices;
+
 
 
     //Get Customer by account
 
 
 
-
     //Get all
-    public Iterable<Customer> getallcustomers(){
+    public Iterable<Customer> getallCustomers(){
         return customerRepository.findAll();
     }
 
 
     //Get one
 
-    public Optional<Customer> findbycustomerid(Long customerId){
+    public Optional<Customer> findByCustomerId(Long customerId){
         return customerRepository.findById(customerId);
     }
 
@@ -40,9 +39,13 @@ public class CustomerService {
     }
 
     //Update Customer
-    public Customer updateCustomer (Customer customer, Long customerId){
-            customerRepository.save(customer);
-        return customer;
+    public void updateCustomer (Customer customer, Long customerId){
+
+        for(Customer c : customerRepository.findAll())
+        {
+            if(c.getId() == customerId) customerRepository.save(customer);
+        }
+
     }
 
 

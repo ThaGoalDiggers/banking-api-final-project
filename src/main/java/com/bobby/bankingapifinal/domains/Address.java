@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 //Class Completed
 @Entity
+@Table(name = "ADDRESS_TABLE")
 public class Address {
     @Id
     @Column(name="ADDRESS_ID")
@@ -13,7 +14,7 @@ public class Address {
     private String streetNumber;
 
     @Column(name="STREET_NAME")
-    private String streetname;
+    private String streetName;
 
     @Column(name="CITY")
     private String city;
@@ -30,10 +31,10 @@ public class Address {
 
     public Address(){}
 
-    public Address(String street, String streetNumber, String streetname, String city) {
+    public Address(String street, String streetNumber, String streetName, String city) {
         this.id = id;
         this.streetNumber = streetNumber;
-        this.streetname = streetname;
+        this.streetName = streetName;
         this.city = city;
         this.state = state;
         this.zip = zip;
@@ -55,12 +56,12 @@ public class Address {
         this.streetNumber = streetNumber;
     }
 
-    public String getStreetname() {
-        return streetname;
+    public String getStreetName() {
+        return streetName;
     }
 
-    public void setStreetname(String streetname) {
-        this.streetname = streetname;
+    public void setStreetName(String streetname) {
+        this.streetName = streetname;
     }
 
     public String getCity() {
@@ -92,7 +93,7 @@ public class Address {
         return "Address{" +
                 "id=" + id +
                 ", streetNumber='" + streetNumber + '\'' +
-                ", streetname='" + streetname + '\'' +
+                ", streetname='" + streetName + '\'' +
                 ", city='" + city + '\'' +
                 ", state='" + state + '\'' +
                 ", zip='" + zip + '\'' +
