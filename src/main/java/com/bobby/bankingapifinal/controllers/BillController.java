@@ -43,7 +43,7 @@ public class BillController
     @RequestMapping(value = "/accounts/{accountId}/bills", method = RequestMethod.GET)
     public ResponseEntity<Iterable<Bill>> getAllBillsByAccount(@PathVariable Long accountId)
     {
-        verifyAccount(accountId);
+//        verifyAccount(accountId);
         Iterable<Bill> bills = billService.getAllBillsByAccount(accountId);
         return new ResponseEntity<>(bills, HttpStatus.OK);
     }
@@ -63,7 +63,7 @@ public class BillController
     @RequestMapping(value = "/customers/{customerId}/bills", method = RequestMethod.GET)
     public ResponseEntity<?> getAllBillsByCustomer(@PathVariable Long customerId)
     {
-        verifyCustomer(customerId);
+//        verifyCustomer(customerId);
         List<Bill> bills = billService.getAllBillsByCustomer(customerId);
         return new ResponseEntity<>(bills, HttpStatus.OK);
     }
@@ -74,7 +74,7 @@ public class BillController
     public ResponseEntity<?> addBill(@RequestBody Bill bill, @PathVariable Long accountId)
     {
 
-        verifyAccount(accountId);
+//        verifyAccount(accountId);
 
         billService.addBill(bill);
         HttpHeaders responseHeaders = new HttpHeaders();
@@ -127,27 +127,27 @@ public class BillController
 
 
 
-    protected void verifyAccount(Long accountId) throws ResourceNotFoundException
-    {
-        Account account = accountService.getOneAccount(accountId).isPresent() ? accountService.getOneAccount(accountId).get() : null;
-        System.out.println(account);
-        if(account == (null))
-        {
-            throw new ResourceNotFoundException("Account with id " + accountId + " not found");
-        }
-    }
+//    protected void verifyAccount(Long accountId) throws ResourceNotFoundException
+//    {
+//        Account account = accountService.getOneAccount(accountId).isPresent() ? accountService.getOneAccount(accountId).get() : null;
+//        System.out.println(account);
+//        if(account == (null))
+//        {
+//            throw new ResourceNotFoundException("Account with id " + accountId + " not found");
+//        }
+//    }
 
 
 
-    protected void verifyCustomer(Long customerId) throws ResourceNotFoundException
-    {
-        Customer customer = customerService.findbycustomerid(customerId).isPresent() ? customerService.findbycustomerid(customerId).get() : null;
-        System.out.println(customer);
-        if(customer == (null))
-        {
-            throw new ResourceNotFoundException("Customer with id " + customerId + " not found");
-        }
-    }
+//    protected void verifyCustomer(Long customerId) throws ResourceNotFoundException
+//    {
+//        Customer customer = customerService.findbycustomerid(customerId).isPresent() ? customerService.findbycustomerid(customerId).get() : null;
+//        System.out.println(customer);
+//        if(customer == (null))
+//        {
+//            throw new ResourceNotFoundException("Customer with id " + customerId + " not found");
+//        }
+//    }
 
 
 
