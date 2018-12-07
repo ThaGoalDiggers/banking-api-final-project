@@ -12,11 +12,11 @@ import java.util.Set;
 public class Customer {
 
     @Id
-   @GeneratedValue
-   @Column(name="CUSTOMER_ID")
+    @GeneratedValue
+    @Column(name="CUSTOMER_ID")
     private Long id;
 
-   @Column(name="FIRST_NAME")
+    @Column(name="FIRST_NAME")
     @NotEmpty
     private String firstName;
 
@@ -25,9 +25,9 @@ public class Customer {
     private String lastName;
 
 
-   @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-   @OrderBy
-   @Size(min = 1,max = 10)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OrderBy
+    @Size(min = 1,max = 10)
     private Set<Address> address;
 
     public Customer(){}

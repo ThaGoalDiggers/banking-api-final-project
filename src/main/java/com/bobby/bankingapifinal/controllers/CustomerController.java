@@ -20,18 +20,18 @@ public class CustomerController {
 
 
    //Get all customers
-    @RequestMapping(value = "/customers",method = RequestMethod.GET)
-    public ResponseEntity<Iterable<Customer>> getCustomers(){
+    @RequestMapping(value = "/customers", method = RequestMethod.GET)
+    public ResponseEntity<Iterable<Customer>> getAllCustomers(){
         Iterable<Customer> allCustomers = customerService.getAllCustomers();
             return new ResponseEntity<>(allCustomers, HttpStatus.OK);
     }
 
 
     //get customer by id
-    @RequestMapping(value = "/customers/{customerId}",method = RequestMethod.GET)
-    public  ResponseEntity<?> getCustomerById(@PathVariable Long customerId){
+    @RequestMapping(value = "/customers/{customerId}", method = RequestMethod.GET)
+    public  ResponseEntity<?> getOneCustomerById(@PathVariable Long customerId){
         verifyCustomer(customerId);
-        Optional<Customer> customer = customerService.findByCustomerId(customerId);
+        Optional<Customer> customer = customerService.getOneCustomerById(customerId);
         HttpHeaders responseHeaders = new HttpHeaders();
         URI newCustomerUri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -61,17 +61,25 @@ public class CustomerController {
     }
 
     //update specific customer
-    @RequestMapping(value ="/customers/{customerid}", method = RequestMethod.PUT)
-    public ResponseEntity<Object> updateCustomer(@RequestBody Customer customer, @PathVariable Long customerid){
-        verifyCustomer(customerid);
-        customerService.updateCustomer(customer,customerid);
+    @RequestMapping(value = "/customers/{customerId}", method = RequestMethod.PUT)
+    public ResponseEntity<?> updateCustomerById(@RequestBody Customer customer, @PathVariable Long customerId){
+        verifyCustomer(customerId);
+        customerService.updateCustomerById(customer,customerId);
       return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
+
+    @RequestMapping(value = "/customers/{customerId}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteCustomerById(@PathVariable Long customerId){
+        customerService.deleteCustomerById(customerId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
     //Error checker
     protected void verifyCustomer(Long customerId)  {
-        Optional<Customer> customer = customerService.findByCustomerId(customerId);
+        Optional<Customer> customer = customerService.getOneCustomerById(customerId);
         if(customer.equals(Optional.empty())) {
             throw new ResourceNotFoundException("Customer with id " + customerId + " not found");
         }
@@ -79,14 +87,4 @@ public class CustomerController {
 
 
 
-
-
-
-
-
-
-
-
-
-    //========================================================
 }

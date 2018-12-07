@@ -31,7 +31,7 @@ public class Address {
 
     public Address(){}
 
-    public Address(String street, String streetNumber, String streetName, String city) {
+    public Address(String streetNumber, String streetName, String city, String state, String zip) {
         this.id = id;
         this.streetNumber = streetNumber;
         this.streetName = streetName;
@@ -60,8 +60,8 @@ public class Address {
         return streetName;
     }
 
-    public void setStreetName(String streetname) {
-        this.streetName = streetname;
+    public void setStreetName(String streetName) {
+        this.streetName = streetName;
     }
 
     public String getCity() {
@@ -88,12 +88,20 @@ public class Address {
         this.zip = zip;
     }
 
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
     @Override
     public String toString() {
         return "Address{" +
                 "id=" + id +
                 ", streetNumber='" + streetNumber + '\'' +
-                ", streetname='" + streetName + '\'' +
+                ", streetName='" + streetName + '\'' +
                 ", city='" + city + '\'' +
                 ", state='" + state + '\'' +
                 ", zip='" + zip + '\'' +

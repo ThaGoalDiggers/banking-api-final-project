@@ -29,7 +29,7 @@ public class CustomerService {
 
     //Get one
 
-    public Optional<Customer> findByCustomerId(Long customerId){
+    public Optional<Customer> getOneCustomerById(Long customerId){
         return customerRepository.findById(customerId);
     }
 
@@ -39,7 +39,7 @@ public class CustomerService {
     }
 
     //Update Customer
-    public void updateCustomer (Customer customer, Long customerId){
+    public void updateCustomerById(Customer customer, Long customerId){
 
         for(Customer c : customerRepository.findAll())
         {
@@ -48,7 +48,9 @@ public class CustomerService {
 
     }
 
-
+    public void deleteCustomerById(Long customerId){
+        customerRepository.deleteById(customerId);
+    }
 
 
 
