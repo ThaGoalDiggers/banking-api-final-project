@@ -30,7 +30,7 @@ public class AccountController {
 
     @RequestMapping(value = "/customers/{customerId}/accounts", method = RequestMethod.POST)
     public ResponseEntity<?> createAccount(@RequestBody Account account, @PathVariable Long customerId){
-        account.setCustomer(customerService.findbycustomerid(customerId).orElse(null));
+        account.setCustomer(customerService.findByCustomerId(customerId).orElse(null));
         HttpHeaders httpHeaders = new HttpHeaders();
         URI newAccountUri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -43,7 +43,7 @@ public class AccountController {
 
     @RequestMapping(value = "/customers/{customerId}/accounts/{accountId}", method = RequestMethod.PUT)
     public ResponseEntity<?> updateAccount(@RequestBody Account account, @PathVariable Long accountId, @PathVariable Long customerId){
-        for (Customer c: customerService.getallcustomers())
+        for (Customer c: customerService.getAllCustomers())
         {
             if (c.getId().equals(customerId)) accountServices.updateAccount(account, accountId);
         }
@@ -81,6 +81,7 @@ public class AccountController {
     @RequestMapping(value = "/customers/{customerId}/accounts/{accountId}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteAccount(@PathVariable Long accountId, @PathVariable Long customerId){
         accountServices.deleteAccount(accountId);
+        return null;
     }
 
     @RequestMapping(value = "/customers/{customerId}/accounts", method = RequestMethod.GET)

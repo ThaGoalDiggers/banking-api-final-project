@@ -22,7 +22,7 @@ public class CustomerController {
    //Get all customers
     @RequestMapping(value = "/customers",method = RequestMethod.GET)
     public ResponseEntity<Iterable<Customer>> getCustomers(){
-        Iterable<Customer> allCustomers = customerService.getallCustomers();
+        Iterable<Customer> allCustomers = customerService.getAllCustomers();
             return new ResponseEntity<>(allCustomers, HttpStatus.OK);
     }
 

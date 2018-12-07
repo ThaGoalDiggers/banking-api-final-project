@@ -22,7 +22,7 @@ public class CustomerService {
 
 
     //Get all
-    public Iterable<Customer> getallCustomers(){
+    public Iterable<Customer> getAllCustomers(){
         return customerRepository.findAll();
     }
 
