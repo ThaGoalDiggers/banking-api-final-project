@@ -27,7 +27,7 @@ public class WithdrawalController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/accounts/{accountId}/withdrawals")
     public ResponseEntity<Iterable<Withdrawal>> getAllWithdrawals(@PathVariable Long accountId){
-        verifyAccount(accountId);
+//        verifyAccount(accountId);
 
         Iterable<Withdrawal> withdrawals = withdrawalServices.getAllWithdrawals();
 
@@ -46,7 +46,7 @@ public class WithdrawalController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/accounts/{accountId}/withdrawals")
     public ResponseEntity<?> createWithdrawal(@RequestBody Withdrawal withdrawal, @PathVariable Long accountId){
-        verifyAccount(accountId);
+//        verifyAccount(accountId);
 
         withdrawalServices.createWithdrawal(withdrawal);
 
@@ -89,13 +89,13 @@ public class WithdrawalController {
         }
     }
 
-    protected void verifyAccount(Long accountId) throws ResourceNotFoundException
-    {
-        Account account = accountServices.getOneAccount(accountId).isPresent() ? accountServices.getOneAccount(accountId).get() : null;
-        System.out.println(account);
-        if(account == (null))
-        {
-            throw new ResourceNotFoundException("Account with id " + accountId + " not found");
-        }
-    }
+//    protected void verifyAccount(Long accountId) throws ResourceNotFoundException
+//    {
+//        Account account = accountServices.getOneAccount(accountId).isPresent() ? accountServices.getOneAccount(accountId).get() : null;
+//        System.out.println(account);
+//        if(account == (null))
+//        {
+//            throw new ResourceNotFoundException("Account with id " + accountId + " not found");
+//        }
+//    }
 }
