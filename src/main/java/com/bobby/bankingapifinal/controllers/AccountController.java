@@ -2,10 +2,7 @@ package com.bobby.bankingapifinal.controllers;
 
 
 import com.bobby.bankingapifinal.domains.Account;
-import com.bobby.bankingapifinal.domains.Customer;
-import com.bobby.bankingapifinal.repositories.AccountRepository;
-import com.bobby.bankingapifinal.services.AccountServices;
-import com.bobby.bankingapifinal.services.CustomerService;
+import com.bobby.bankingapifinal.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,38 +12,52 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class AccountController {
 
 
     @Autowired
-    private AccountServices accountServices;
+    private AccountService accountService;
 
-    @Autowired
-    private CustomerService customerService;
+
+    @RequestMapping(value = "/accounts", method = RequestMethod.GET)
+    public ResponseEntity<Iterable<Account>> getAllAccounts(){
+        Iterable<Account> allAccounts = accountService.getAllAccounts();
+        return new ResponseEntity<>(allAccounts, HttpStatus.OK);
+    }
 
 
     @RequestMapping(value = "/customers/{customerId}/accounts", method = RequestMethod.POST)
     public ResponseEntity<?> createAccount(@RequestBody Account account, @PathVariable Long customerId){
-        account.setCustomer(customerService.getOneCustomerById(customerId).orElse(null));
+        accountService.createAccount(account, customerId);
         HttpHeaders httpHeaders = new HttpHeaders();
         URI newAccountUri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("/{id}")
+                .path("/accounts")
                 .buildAndExpand(account.getId())
                 .toUri();
         httpHeaders.setLocation(newAccountUri);
         return new ResponseEntity<>(account,httpHeaders,HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/customers/{customerId}/accounts/{accountId}", method = RequestMethod.PUT)
-    public ResponseEntity<?> updateAccount(@RequestBody Account account, @PathVariable Long accountId, @PathVariable Long customerId){
-        for (Customer c: customerService.getAllCustomers())
-        {
-            if (c.getId().equals(customerId)) accountServices.updateAccount(account, accountId);
-        }
+    @RequestMapping(value = "/accounts/{accountId}", method = RequestMethod.PUT)
+    public ResponseEntity<?> updateAccount(@RequestBody Account account, @PathVariable Long accountId){
+        accountService.updateAccount(account, accountId);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        URI newAccountUri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{accountId}")
+                .buildAndExpand(account.getId())
+                .toUri();
+        httpHeaders.setLocation(newAccountUri);
+        return new ResponseEntity<>(account,httpHeaders,HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/accounts/{accountId}", method = RequestMethod.GET)
+    public ResponseEntity<?> getOneAccountById(@PathVariable Long accountId){
+        Account account = accountService.getOneAccountById(accountId).orElse(null);
+
         HttpHeaders httpHeaders = new HttpHeaders();
         URI newAccountUri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -57,36 +68,24 @@ public class AccountController {
         return new ResponseEntity<>(account,httpHeaders,HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/customers/{customerId}/accounts/{accountId}", method = RequestMethod.GET)
-    public ResponseEntity<?> getOneAccount(@PathVariable Long accountId,@PathVariable Long customerId){
-        List<Account> accounts = accountServices.getAllAccounts(customerId);
 
-        Account account = null;
-        for (Account ac:accounts)
-        {
-            if(accountId.equals(ac.getId())) account = ac;
-        }
+    @RequestMapping(value = "/accounts/{accountId}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteAccount(@PathVariable Long accountId){
+        accountService.deleteAccount(accountId);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         URI newAccountUri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(account.getId())
+                .path("/{accountId}")
+                .buildAndExpand()
                 .toUri();
         httpHeaders.setLocation(newAccountUri);
-        return new ResponseEntity<>(account,httpHeaders,HttpStatus.OK);
-    }
-
-
-    @RequestMapping(value = "/customers/{customerId}/accounts/{accountId}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteAccount(@PathVariable Long accountId, @PathVariable Long customerId){
-        accountServices.deleteAccount(accountId);
-        return null;
+        return new ResponseEntity<>(null,httpHeaders,HttpStatus.OK);
     }
 
     @RequestMapping(value = "/customers/{customerId}/accounts", method = RequestMethod.GET)
-    public ResponseEntity<?> getAccountByCustomerID(@PathVariable Long customerId){
-        List<Account> accounts = accountServices.getAllAccounts(customerId);
+    public ResponseEntity<?> getAllAccountsByCustomer(@PathVariable Long customerId){
+        List<Account> accounts = accountService.getAllAccountsByCustomer(customerId);
         HttpHeaders httpHeaders = new HttpHeaders();
         URI newAccountUri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -96,7 +95,6 @@ public class AccountController {
         httpHeaders.setLocation(newAccountUri);
         return new ResponseEntity<>(accounts,httpHeaders,HttpStatus.CREATED);
     }
-
 
 
 

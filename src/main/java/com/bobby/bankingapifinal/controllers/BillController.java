@@ -2,11 +2,9 @@ package com.bobby.bankingapifinal.controllers;
 //This controller was made by Derian
 
 
-import com.bobby.bankingapifinal.domains.Account;
 import com.bobby.bankingapifinal.domains.Bill;
-import com.bobby.bankingapifinal.domains.Customer;
 import com.bobby.bankingapifinal.exceptions.ResourceNotFoundException;
-import com.bobby.bankingapifinal.services.AccountServices;
+import com.bobby.bankingapifinal.services.AccountService;
 import com.bobby.bankingapifinal.services.BillService;
 import com.bobby.bankingapifinal.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +31,7 @@ public class BillController
     private BillService billService;
 
     @Autowired
-    private AccountServices accountService;
+    private AccountService accountService;
 
     @Autowired
     private CustomerService customerService;
