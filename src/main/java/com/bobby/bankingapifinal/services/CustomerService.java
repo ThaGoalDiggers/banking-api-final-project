@@ -43,7 +43,7 @@ public class CustomerService {
 
         for(Customer c : customerRepository.findAll())
         {
-            if(c.getId() == customerId) customerRepository.save(customer);
+            if(c.getId().equals(customerId)) customerRepository.save(customer);
         }
 
     }

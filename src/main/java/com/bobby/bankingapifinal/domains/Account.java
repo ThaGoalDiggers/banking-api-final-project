@@ -24,7 +24,7 @@ public class Account {
     private Integer rewards;
 
     @Column(name = "BALANCE")
-    private double balance;
+    private Double balance;
 
     @ManyToOne
     @JoinColumn(name = "CUSTOMER_ID")
@@ -33,7 +33,7 @@ public class Account {
     public Account() {
     }
 
-    public Account(AccountType accountType, String nickName, Integer rewards, double balance, Customer customer) {
+    public Account(AccountType accountType, String nickName, Integer rewards, Double balance, Customer customer) {
         this.accountType = accountType;
         this.nickName = nickName;
         this.rewards = rewards;
@@ -43,10 +43,6 @@ public class Account {
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public AccountType getAccountType() {
@@ -73,11 +69,11 @@ public class Account {
         this.rewards = rewards;
     }
 
-    public double getBalance() {
+    public Double getBalance() {
         return balance;
     }
 
-    public void setBalance(double balance) {
+    public void setBalance(Double balance) {
         this.balance = balance;
     }
 

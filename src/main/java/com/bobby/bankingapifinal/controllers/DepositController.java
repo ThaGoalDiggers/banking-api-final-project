@@ -1,9 +1,8 @@
 package com.bobby.bankingapifinal.controllers;
 
-import com.bobby.bankingapifinal.domains.Account;
 import com.bobby.bankingapifinal.domains.Deposit;
 import com.bobby.bankingapifinal.exceptions.ResourceNotFoundException;
-import com.bobby.bankingapifinal.services.AccountServices;
+import com.bobby.bankingapifinal.services.AccountService;
 import com.bobby.bankingapifinal.services.DepositServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -22,7 +20,7 @@ public class DepositController {
     private DepositServices depositServices;
 
     @Autowired
-    private AccountServices accountServices;
+    private AccountService accountService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/accounts/{accountId}/deposits")
     public ResponseEntity<Iterable<Deposit>> getAllDeposits(@PathVariable Long accountId){
