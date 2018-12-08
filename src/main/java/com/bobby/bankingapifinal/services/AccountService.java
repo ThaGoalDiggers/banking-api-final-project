@@ -37,9 +37,12 @@ public class AccountService {
     }
 
     public void createAccount(Account account, Long customerId){
-        accountRepository.save(account);
+
         for(Customer c : customerRepository.findAll()){
-            if(c.getId().equals(customerId)) account.setCustomer(c);
+            if(c.getId().equals(customerId)){
+                accountRepository.save(account);
+                account.setCustomer(c);
+            }
         }
     }
 

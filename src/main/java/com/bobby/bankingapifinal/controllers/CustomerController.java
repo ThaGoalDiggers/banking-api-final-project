@@ -15,8 +15,15 @@ import java.util.Optional;
 
 @RestController
 public class CustomerController {
+
     @Autowired
     private CustomerService customerService;
+
+    @RequestMapping(value = "/accounts/{accountId}/customer")
+    public ResponseEntity<?> getOneCustomerByAccountId(@PathVariable Long accountId){
+        Customer customer = customerService.getOneCustomerByAccountId(accountId);
+        return new ResponseEntity<>(customer, HttpStatus.OK);
+    }
 
 
    //Get all customers

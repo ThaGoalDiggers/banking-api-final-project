@@ -25,9 +25,9 @@ public class Address {
     @Column(name="ZIP")
     private String zip;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "CUSTOMER_ID")
-    private Customer customer;
+//    @ManyToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "CUSTOMER_ID")
+//    private Customer customer;
 
     public Address(){}
 
@@ -88,13 +88,13 @@ public class Address {
         this.zip = zip;
     }
 
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
+//    public Customer getCustomer() {
+//        return customer;
+//    }
+//
+//    public void setCustomer(Customer customer) {
+//        this.customer = customer;
+//    }
 
     @Override
     public String toString() {

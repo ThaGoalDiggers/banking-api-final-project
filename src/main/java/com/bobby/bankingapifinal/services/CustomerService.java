@@ -15,10 +15,22 @@ public class CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
 
+    @Autowired
+    private AccountRepository accountRepository;
+
 
 
     //Get Customer by account
-
+    public Customer getOneCustomerByAccountId(Long accountId){
+        Customer customer;
+        for(Account acc : accountRepository.findAll()){
+            if(acc.getId().equals(accountId)){
+                customer = acc.getCustomer();
+                return customer;
+            }
+        }
+        return null;
+    }
 
 
     //Get all
