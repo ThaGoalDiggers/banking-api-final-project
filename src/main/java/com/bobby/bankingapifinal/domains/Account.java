@@ -15,6 +15,7 @@ public class Account {
     private Long id;
 
     @Column(name = "TYPE")
+    @Enumerated(EnumType.STRING)
     private AccountType accountType;
 
     @Column(name = "NICKNAME")
@@ -26,19 +27,18 @@ public class Account {
     @Column(name = "BALANCE")
     private Double balance;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "CUSTOMER_ID")
     private Customer customer;
 
     public Account() {
     }
 
-    public Account(AccountType accountType, String nickName, Integer rewards, Double balance, Customer customer) {
+    public Account(AccountType accountType, String nickName, Integer rewards, Double balance) {
         this.accountType = accountType;
         this.nickName = nickName;
         this.rewards = rewards;
         this.balance = balance;
-        this.customer = customer;
     }
 
     public Long getId() {
