@@ -24,7 +24,7 @@ public class WithdrawalController {
     private AccountService accountService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/withdrawals")
-    public ResponseEntity<Iterable<Withdrawal>> getAllWithdrawals(@PathVariable Long accountId){
+    public ResponseEntity<Iterable<Withdrawal>> getAllWithdrawals(){
         Iterable<Withdrawal> withdrawals = withdrawalService.getAllWithdrawals();
 
         return new ResponseEntity<>(withdrawals, HttpStatus.OK);

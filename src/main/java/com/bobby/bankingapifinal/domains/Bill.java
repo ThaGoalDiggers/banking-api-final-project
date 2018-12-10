@@ -21,7 +21,6 @@ public class Bill
     private Long id;
 
     @Column(name = "BILL_STATUS")
-    @NotEmpty
     @Enumerated(EnumType.STRING)
     private BillStatus status;
 
