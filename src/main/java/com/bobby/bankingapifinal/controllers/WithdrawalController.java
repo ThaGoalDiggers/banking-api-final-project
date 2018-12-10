@@ -23,69 +23,59 @@ public class WithdrawalController {
     @Autowired
     private AccountService accountService;
 
-    @RequestMapping(method = RequestMethod.GET, value = "/accounts/{accountId}/withdrawals")
-    public ResponseEntity<Iterable<Withdrawal>> getAllWithdrawals(@PathVariable Long accountId){
-//        verifyAccount(accountId);
-
+    @RequestMapping(method = RequestMethod.GET, value = "/withdrawals")
+    public ResponseEntity<Iterable<Withdrawal>> getAllWithdrawals(){
         Iterable<Withdrawal> withdrawals = withdrawalService.getAllWithdrawals();
 
         return new ResponseEntity<>(withdrawals, HttpStatus.OK);
     }
 
 
-    @RequestMapping(method = RequestMethod.GET, value = "/accounts/{accountId}/withdrawals/{withdrawalId}")
+    @RequestMapping(method = RequestMethod.GET, value = "/withdrawals/{withdrawalId}")
     public ResponseEntity<?> getWithdrawalById(@PathVariable Long withdrawalId, Long accountId){
-        verifyWithdrawal(withdrawalId);
-
-        Optional<Withdrawal> withdrawals = withdrawalService.getWithdrawalById(withdrawalId);
+        Withdrawal withdrawals = withdrawalService.getWithdrawalById(withdrawalId).orElse(null);
 
         return new ResponseEntity<>(withdrawals, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/accounts/{accountId}/withdrawals")
     public ResponseEntity<?> createWithdrawal(@RequestBody Withdrawal withdrawal, @PathVariable Long accountId){
-//        verifyAccount(accountId);
+        withdrawalService.createWithdrawal(withdrawal, accountId);
 
-        withdrawalService.createWithdrawal(withdrawal);
-
-        HttpHeaders responseHeaders = new HttpHeaders();
+        HttpHeaders httpHeaders = new HttpHeaders();
         URI newBillUri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(withdrawal.getId())
                 .toUri();
-        responseHeaders.setLocation(newBillUri);
-        return new ResponseEntity<>(null, responseHeaders, HttpStatus.CREATED);
+        httpHeaders.setLocation(newBillUri);
+        return new ResponseEntity<>(withdrawal, httpHeaders, HttpStatus.CREATED);
     }
 
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/accounts/{accountId}/withdrawals/{withdrawalId}")
-    public ResponseEntity<?> updateWithdrawal(@RequestBody Withdrawal withdrawal, @PathVariable Long withdrawalId, Long accountId){
-        verifyWithdrawal(withdrawalId);
-
-        withdrawalService.updateWithdrawal(withdrawal);
+    @RequestMapping(method = RequestMethod.PUT, value = "/withdrawals/{withdrawalId}")
+    public ResponseEntity<?> updateWithdrawal(@RequestBody Withdrawal withdrawal, @PathVariable Long withdrawalId){
+        withdrawalService.updateWithdrawal(withdrawal, withdrawalId);
 
         return new ResponseEntity<>(withdrawal, HttpStatus.OK);
     }
 
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/accounts/{accountId}/withdrawals/{withdrawalId}")
-    public ResponseEntity<?> deleteWithdrawal(@PathVariable Long withdrawalId, Long accountId){
-        verifyWithdrawal(withdrawalId);
-
+    @RequestMapping(method = RequestMethod.DELETE, value = "/withdrawals/{withdrawalId}")
+    public ResponseEntity<?> deleteWithdrawal(@PathVariable Long withdrawalId){
         withdrawalService.deleteDeposit(withdrawalId);
 
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
 
-    protected void verifyWithdrawal(Long withdrawalId) throws ResourceNotFoundException {
-        Withdrawal withdrawal = withdrawalService.getWithdrawalById(withdrawalId).isPresent() ? withdrawalService.getWithdrawalById(withdrawalId).get() : null;
-        System.out.println(withdrawal);
-        if(withdrawal == (null)){
-            throw new ResourceNotFoundException("Withdrawal with id " + withdrawalId + " not found.");
-        }
-    }
+//    protected void verifyWithdrawal(Long withdrawalId) throws ResourceNotFoundException {
+//        Withdrawal withdrawal = withdrawalService.getWithdrawalById(withdrawalId).isPresent() ? withdrawalService.getWithdrawalById(withdrawalId).get() : null;
+//        System.out.println(withdrawal);
+//        if(withdrawal == (null)){
+//            throw new ResourceNotFoundException("Withdrawal with id " + withdrawalId + " not found.");
+//        }
+//    }
 
 //    protected void verifyAccount(Long accountId) throws ResourceNotFoundException
 //    {

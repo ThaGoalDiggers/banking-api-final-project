@@ -22,67 +22,56 @@ public class DepositController {
     @Autowired
     private AccountService accountService;
 
-    @RequestMapping(method = RequestMethod.GET, value = "/accounts/{accountId}/deposits")
-    public ResponseEntity<Iterable<Deposit>> getAllDeposits(@PathVariable Long accountId){
-//        verifyAccount(accountId);
-
+    @RequestMapping(method = RequestMethod.GET, value = "/deposits")
+    public ResponseEntity<Iterable<Deposit>> getAllDeposits(){
         Iterable<Deposit> deposits = depositService.getAllDeposits();
 
         return new ResponseEntity<>(deposits, HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/accounts/{accountId}/deposits/{depositId}")
-    public ResponseEntity<?> getDepositById(Long accountId, @PathVariable Long depositId){
-        verifyDeposit(depositId);
-
-        Optional<Deposit> deposit = depositService.getDepositById(depositId);
-
+    @RequestMapping(method = RequestMethod.GET, value = "/deposits/{depositId}")
+    public ResponseEntity<?> getDepositById(@PathVariable Long depositId){
+        Deposit deposit = depositService.getDepositById(depositId).orElse(null);
         return new ResponseEntity<>(deposit, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/accounts/{accountId}/deposits")
     public ResponseEntity<?> createDeposit(@RequestBody Deposit deposit, @PathVariable Long accountId){
-//        verifyAccount(accountId);
+        depositService.createDeposit(deposit, accountId);
 
-        depositService.createDeposit(deposit);
-
-        HttpHeaders responseHeaders = new HttpHeaders();
+        HttpHeaders httpHeaders = new HttpHeaders();
         URI newBillUri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("/{id}")
+                .path("/deposits")
                 .buildAndExpand(deposit.getId())
                 .toUri();
-        responseHeaders.setLocation(newBillUri);
-        return new ResponseEntity<>(null, responseHeaders, HttpStatus.CREATED);
+        httpHeaders.setLocation(newBillUri);
+        return new ResponseEntity<>(deposit, httpHeaders, HttpStatus.CREATED);
     }
 
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/accounts/{accountId}/deposits/{depositId}")
-    public ResponseEntity<?> updateDeposit(@RequestBody Deposit deposit, @PathVariable Long depositId, Long accountId){
-        verifyDeposit(depositId);
-
-        depositService.updateDeposit(deposit);
+    @RequestMapping(method = RequestMethod.PUT, value = "/deposits/{depositId}")
+    public ResponseEntity<?> updateDeposit(@RequestBody Deposit deposit, @PathVariable Long depositId){
+        depositService.updateDeposit(deposit, depositId);
 
         return new ResponseEntity<>(deposit, HttpStatus.OK);
     }
 
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/accounts/{accountId}/deposits/{depositId}")
-    public ResponseEntity<?> deleteDeposit(@PathVariable Long depositId, Long accountId){
-        verifyDeposit(depositId);
-
+    @RequestMapping(method = RequestMethod.DELETE, value = "/deposits/{depositId}")
+    public ResponseEntity<?> deleteDeposit(@PathVariable Long depositId){
         depositService.deleteDeposit(depositId);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    protected void verifyDeposit(Long depositId) throws ResourceNotFoundException {
-        Deposit deposit = depositService.getDepositById(depositId).isPresent() ? depositService.getDepositById(depositId).get() : null;
-        System.out.println(deposit);
-        if(deposit == (null)){
-            throw new ResourceNotFoundException("Deposit with id " + depositId + " not found.");
-        }
-    }
+//    protected void verifyDeposit(Long depositId) throws ResourceNotFoundException {
+//        Deposit deposit = depositService.getDepositById(depositId).isPresent() ? depositService.getDepositById(depositId).get() : null;
+//        System.out.println(deposit);
+//        if(deposit == (null)){
+//            throw new ResourceNotFoundException("Deposit with id " + depositId + " not found.");
+//        }
+//    }
 
 //    protected void verifyAccount(Long accountId) throws ResourceNotFoundException
 //    {
