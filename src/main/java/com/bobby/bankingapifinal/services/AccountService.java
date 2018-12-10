@@ -40,8 +40,8 @@ public class AccountService {
 
         for(Customer c : customerRepository.findAll()){
             if(c.getId().equals(customerId)){
-                accountRepository.save(account);
                 account.setCustomer(c);
+                accountRepository.save(account);
             }
         }
     }

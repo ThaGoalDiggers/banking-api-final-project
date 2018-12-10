@@ -8,6 +8,7 @@ import com.sun.javafx.beans.IDProperty;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "DEPOSIT_TABLE")
 public class Deposit {
     @Id
     @GeneratedValue
@@ -39,6 +40,7 @@ public class Deposit {
     private String description;
 
     @ManyToOne
+    @JoinColumn(name = "ACCOUNT_ID")
     private Account account;
 
     public Deposit(DepositType depositType, String transactionDate, DepositStatus depositStatus, Long payeeId, DepositMedium depositMedium, Double amount, String description, Account account) {
@@ -50,6 +52,16 @@ public class Deposit {
         this.amount = amount;
         this.description = description;
         this.account = account;
+    }
+
+    public Deposit(DepositType depositType, String transactionDate, DepositStatus depositStatus, Long payeeId, DepositMedium depositMedium, Double amount, String description) {
+        this.depositType = depositType;
+        this.transactionDate = transactionDate;
+        this.depositStatus = depositStatus;
+        this.payeeId = payeeId;
+        this.depositMedium = depositMedium;
+        this.amount = amount;
+        this.description = description;
     }
 
     public Deposit() {

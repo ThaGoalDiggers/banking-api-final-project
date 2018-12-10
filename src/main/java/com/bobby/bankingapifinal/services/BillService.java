@@ -2,8 +2,8 @@ package com.bobby.bankingapifinal.services;
 //This service was made by Derian
 
 
+import com.bobby.bankingapifinal.domains.Account;
 import com.bobby.bankingapifinal.domains.Bill;
-import com.bobby.bankingapifinal.repositories.AccountRepository;
 import com.bobby.bankingapifinal.repositories.BillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,60 +26,58 @@ public class BillService
     @Autowired
     private BillRepository billRepository;
 
+    @Autowired
+    private AccountService accountService;
+
 
 
     //GET all bills for a specified account
     public List<Bill> getAllBillsByAccount(Long accountId)
     {
-        System.out.println("getAllBillsByAccount method called");
-
         List<Bill> bills = new ArrayList<>();
-        System.out.println("bills ArrayList created");
-
         billRepository.findByAccountId(accountId).forEach(bills::add);
-        System.out.println("each bill from account #" + accountId + "added to bills ArrayList");
-
-        System.out.println("Bills: " + bills);
         return bills;
     }
 
 
 
-    //GET a bill by id
-    public Optional<Bill> getBill(Long id)
-    {
-        System.out.println("getBill method called");
+    //GET all bills
+    public Iterable<Bill> getAllBills()
+    { return billRepository.findAll(); }
 
-        return billRepository.findById(id);
-    }
+
+
+    //GET a bill by id
+    public Optional<Bill> getOneBillById(Long id)
+    { return billRepository.findById(id); }
 
 
 
     //GET all bills for a customer
     public List<Bill> getAllBillsByCustomer(Long customerId)
     {
-        System.out.println("getAllBillsByCustomer method called");
-
+        List<Account> accounts = accountService.getAllAccountsByCustomer(customerId);
         List<Bill> bills = new ArrayList<>();
-        System.out.println("bills ArrayList created");
 
-        billRepository.findByCustomerId(customerId).forEach(bills::add);
-        System.out.println("each bill for customer #" + customerId + "added to bills ArrayList");
+        for(Account acc : accounts)
+        { billRepository.findByAccountId(acc.getId()).forEach(bills::add); }
 
-        System.out.println("Bills: " + bills);
         return bills;
     }
 
 
 
     //POST a bill
-    public void addBill(Bill bill)
+    public void createBill(Bill bill, Long accountId)
     {
-        System.out.println("addBill method called");
-
-        billRepository.save(bill);
-
-        System.out.println("bill added");
+        for(Account acc : accountService.getAllAccounts())
+        {
+            if(acc.getId().equals(accountId))
+            {
+                bill.setAccount(acc);
+                billRepository.save(bill);
+            }
+        }
     }
 
 
@@ -87,38 +85,17 @@ public class BillService
     //PUT a bill (update)
     public void updateBill(Bill bill, Long billId)
     {
-        System.out.println("updateBill method called");
-
         for(Bill b : billRepository.findAll())
         {
-            if(b.getId() == billId) billRepository.save(bill);
+            if(b.getId().equals(billId)) billRepository.save(bill);
         }
-
-        System.out.println("bill updated");
     }
 
 
 
     //DELETE a bill
     public void deleteBill(Long id)
-    {
-        System.out.println("deleteBill method called");
-
-        Bill billToDelete;
-
-        for(Bill b : billRepository.findAll())
-        {
-            System.out.println("searching for bill with id #" + id);
-            if (b.getId() == id)
-            {
-                System.out.println("bill #" + id + "found");
-                billToDelete = b;
-                billRepository.delete(billToDelete);
-                System.out.println("bill #" + id + "deleted");
-            }
-        }
-
-    }
+    { billRepository.deleteById(id); }
 
 
 

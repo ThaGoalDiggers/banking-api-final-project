@@ -3,7 +3,7 @@ package com.bobby.bankingapifinal.controllers;
 import com.bobby.bankingapifinal.domains.Deposit;
 import com.bobby.bankingapifinal.exceptions.ResourceNotFoundException;
 import com.bobby.bankingapifinal.services.AccountService;
-import com.bobby.bankingapifinal.services.DepositServices;
+import com.bobby.bankingapifinal.services.DepositService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,7 +17,7 @@ import java.util.Optional;
 @RestController
 public class DepositController {
     @Autowired
-    private DepositServices depositServices;
+    private DepositService depositService;
 
     @Autowired
     private AccountService accountService;
@@ -26,7 +26,7 @@ public class DepositController {
     public ResponseEntity<Iterable<Deposit>> getAllDeposits(@PathVariable Long accountId){
 //        verifyAccount(accountId);
 
-        Iterable<Deposit> deposits = depositServices.getAllDeposits();
+        Iterable<Deposit> deposits = depositService.getAllDeposits();
 
         return new ResponseEntity<>(deposits, HttpStatus.OK);
     }
@@ -35,7 +35,7 @@ public class DepositController {
     public ResponseEntity<?> getDepositById(Long accountId, @PathVariable Long depositId){
         verifyDeposit(depositId);
 
-        Optional<Deposit> deposit = depositServices.getDepositById(depositId);
+        Optional<Deposit> deposit = depositService.getDepositById(depositId);
 
         return new ResponseEntity<>(deposit, HttpStatus.OK);
     }
@@ -44,7 +44,7 @@ public class DepositController {
     public ResponseEntity<?> createDeposit(@RequestBody Deposit deposit, @PathVariable Long accountId){
 //        verifyAccount(accountId);
 
-        depositServices.createDeposit(deposit);
+        depositService.createDeposit(deposit);
 
         HttpHeaders responseHeaders = new HttpHeaders();
         URI newBillUri = ServletUriComponentsBuilder
@@ -61,7 +61,7 @@ public class DepositController {
     public ResponseEntity<?> updateDeposit(@RequestBody Deposit deposit, @PathVariable Long depositId, Long accountId){
         verifyDeposit(depositId);
 
-        depositServices.updateDeposit(deposit);
+        depositService.updateDeposit(deposit);
 
         return new ResponseEntity<>(deposit, HttpStatus.OK);
     }
@@ -71,13 +71,13 @@ public class DepositController {
     public ResponseEntity<?> deleteDeposit(@PathVariable Long depositId, Long accountId){
         verifyDeposit(depositId);
 
-        depositServices.deleteDeposit(depositId);
+        depositService.deleteDeposit(depositId);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     protected void verifyDeposit(Long depositId) throws ResourceNotFoundException {
-        Deposit deposit = depositServices.getDepositById(depositId).isPresent() ? depositServices.getDepositById(depositId).get() : null;
+        Deposit deposit = depositService.getDepositById(depositId).isPresent() ? depositService.getDepositById(depositId).get() : null;
         System.out.println(deposit);
         if(deposit == (null)){
             throw new ResourceNotFoundException("Deposit with id " + depositId + " not found.");
