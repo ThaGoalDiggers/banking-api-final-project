@@ -3,19 +3,18 @@ package com.bobby.bankingapifinal.services;
 import com.bobby.bankingapifinal.domains.Deposit;
 import com.bobby.bankingapifinal.repositories.DepositRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 @Service
-public class DepositServices {
+public class DepositService {
 
     @Autowired
     private DepositRepository depositRepository;
+
+    @Autowired
+    private AccountService accountService;
 
     public Iterable<Deposit> getAllDeposits(){
         return depositRepository.findAll();

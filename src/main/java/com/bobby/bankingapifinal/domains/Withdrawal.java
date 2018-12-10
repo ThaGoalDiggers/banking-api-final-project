@@ -7,6 +7,7 @@ import com.bobby.bankingapifinal.enumerations.WithdrawalType;
 import javax.persistence.*;
 
 @Entity
+@Table( name = "WITHDRAWAL_TABLE")
 public class Withdrawal {
     @Id
     @GeneratedValue
@@ -38,6 +39,7 @@ public class Withdrawal {
     private String description;
 
     @ManyToOne
+    @JoinColumn(name = "ACCOUNT_ID")
     private Account account;
 
     public Withdrawal(WithdrawalType withdrawalType, String transactionDate, WithdrawalStatus withdrawalStatus, Long payerId, WithdrawalMedium withdrawalMedium, Double amount, String description, Account account) {
@@ -49,6 +51,16 @@ public class Withdrawal {
         this.amount = amount;
         this.description = description;
         this.account = account;
+    }
+
+    public Withdrawal(WithdrawalType withdrawalType, String transactionDate, WithdrawalStatus withdrawalStatus, Long payerId, WithdrawalMedium withdrawalMedium, Double amount, String description) {
+        this.withdrawalType = withdrawalType;
+        this.transactionDate = transactionDate;
+        this.withdrawalStatus = withdrawalStatus;
+        this.payerId = payerId;
+        this.withdrawalMedium = withdrawalMedium;
+        this.amount = amount;
+        this.description = description;
     }
 
     public Withdrawal() {

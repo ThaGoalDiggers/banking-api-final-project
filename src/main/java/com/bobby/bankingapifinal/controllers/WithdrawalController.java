@@ -3,7 +3,7 @@ package com.bobby.bankingapifinal.controllers;
 import com.bobby.bankingapifinal.domains.Withdrawal;
 import com.bobby.bankingapifinal.exceptions.ResourceNotFoundException;
 import com.bobby.bankingapifinal.services.AccountService;
-import com.bobby.bankingapifinal.services.WithdrawalServices;
+import com.bobby.bankingapifinal.services.WithdrawalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,7 +18,7 @@ import java.util.Optional;
 public class WithdrawalController {
 
     @Autowired
-    private WithdrawalServices withdrawalServices;
+    private WithdrawalService withdrawalService;
 
     @Autowired
     private AccountService accountService;
@@ -27,7 +27,7 @@ public class WithdrawalController {
     public ResponseEntity<Iterable<Withdrawal>> getAllWithdrawals(@PathVariable Long accountId){
 //        verifyAccount(accountId);
 
-        Iterable<Withdrawal> withdrawals = withdrawalServices.getAllWithdrawals();
+        Iterable<Withdrawal> withdrawals = withdrawalService.getAllWithdrawals();
 
         return new ResponseEntity<>(withdrawals, HttpStatus.OK);
     }
@@ -37,7 +37,7 @@ public class WithdrawalController {
     public ResponseEntity<?> getWithdrawalById(@PathVariable Long withdrawalId, Long accountId){
         verifyWithdrawal(withdrawalId);
 
-        Optional<Withdrawal> withdrawals = withdrawalServices.getWithdrawalById(withdrawalId);
+        Optional<Withdrawal> withdrawals = withdrawalService.getWithdrawalById(withdrawalId);
 
         return new ResponseEntity<>(withdrawals, HttpStatus.OK);
     }
@@ -46,7 +46,7 @@ public class WithdrawalController {
     public ResponseEntity<?> createWithdrawal(@RequestBody Withdrawal withdrawal, @PathVariable Long accountId){
 //        verifyAccount(accountId);
 
-        withdrawalServices.createWithdrawal(withdrawal);
+        withdrawalService.createWithdrawal(withdrawal);
 
         HttpHeaders responseHeaders = new HttpHeaders();
         URI newBillUri = ServletUriComponentsBuilder
@@ -63,7 +63,7 @@ public class WithdrawalController {
     public ResponseEntity<?> updateWithdrawal(@RequestBody Withdrawal withdrawal, @PathVariable Long withdrawalId, Long accountId){
         verifyWithdrawal(withdrawalId);
 
-        withdrawalServices.updateWithdrawal(withdrawal);
+        withdrawalService.updateWithdrawal(withdrawal);
 
         return new ResponseEntity<>(withdrawal, HttpStatus.OK);
     }
@@ -73,14 +73,14 @@ public class WithdrawalController {
     public ResponseEntity<?> deleteWithdrawal(@PathVariable Long withdrawalId, Long accountId){
         verifyWithdrawal(withdrawalId);
 
-        withdrawalServices.deleteDeposit(withdrawalId);
+        withdrawalService.deleteDeposit(withdrawalId);
 
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
 
     protected void verifyWithdrawal(Long withdrawalId) throws ResourceNotFoundException {
-        Withdrawal withdrawal = withdrawalServices.getWithdrawalById(withdrawalId).isPresent() ? withdrawalServices.getWithdrawalById(withdrawalId).get() : null;
+        Withdrawal withdrawal = withdrawalService.getWithdrawalById(withdrawalId).isPresent() ? withdrawalService.getWithdrawalById(withdrawalId).get() : null;
         System.out.println(withdrawal);
         if(withdrawal == (null)){
             throw new ResourceNotFoundException("Withdrawal with id " + withdrawalId + " not found.");

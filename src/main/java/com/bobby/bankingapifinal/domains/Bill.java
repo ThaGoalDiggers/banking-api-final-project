@@ -9,6 +9,7 @@ import javax.validation.constraints.NotEmpty;
 
 
 @Entity
+@Table(name = "BILL_TABLE")
 public class Bill
 {
 
@@ -16,44 +17,40 @@ public class Bill
 
     @Id
     @GeneratedValue
-    @Column(name = "bill_id")
+    @Column(name = "BILL_ID")
     private Long id;
 
-    @Column(name = "bill_status")
+    @Column(name = "BILL_STATUS")
     @NotEmpty
     @Enumerated(EnumType.STRING)
     private BillStatus status;
 
-    @Column(name = "bill_payee")
+    @Column(name = "BILL_PAYEE")
     private String payee;
 
-    @Column(name = "bill_nickname")
+    @Column(name = "BILL_NICKNAME")
     private String nickname;
 
-    @Column(name = "bill_creation_date")
+    @Column(name = "BILL_CREATION_DATE")
     @NotEmpty
     private String creationDate;
 
-    @Column(name = "bill_payment_date")
+    @Column(name = "BILL_PAYMENT_DATE")
     @NotEmpty
     private String paymentDate;
 
-    @Column(name = "bill_upcoming_payment_date")
+    @Column(name = "BILL_UPCOMING_PAYMENT_DATE")
     private String upcomingPaymentDate;
 
-    @Column(name = "bill_recurring_date")
+    @Column(name = "BILL_RECURRING_DATE")
     private Integer recurringDate;
 
-    @Column(name = "bill_payment_amount")
+    @Column(name = "BILL_PAYMENT_AMOUNT")
     private Double paymentAmount;
 
     @ManyToOne
     @JoinColumn(name = "ACCOUNT_ID")
     private Account account;
-
-    @ManyToOne
-    @JoinColumn(name = "CUSTOMER_ID")
-    private Customer customer;
 
 
 
@@ -72,7 +69,20 @@ public class Bill
         this.recurringDate = recurringDate;
         this.paymentAmount = paymentAmount;
         this.account = account;
-        this.customer = account.getCustomer();
+    }
+
+    public Bill(BillStatus status, String payee, String nickname,
+                String creationDate, String paymentDate, String upcomingPaymentDate,
+                Integer recurringDate, Double paymentAmount)
+    {
+        this.status = status;
+        this.payee = payee;
+        this.nickname = nickname;
+        this.creationDate = creationDate;
+        this.paymentDate = paymentDate;
+        this.upcomingPaymentDate = upcomingPaymentDate;
+        this.recurringDate = recurringDate;
+        this.paymentAmount = paymentAmount;
     }
 
 
@@ -87,7 +97,6 @@ public class Bill
     public Integer getRecurringDate() { return recurringDate; }
     public Double getPaymentAmount() { return paymentAmount; }
     public Account getAccount() { return account; }
-    public Customer getCustomer() { return customer; }
 
 
     public void setStatus(BillStatus status) { this.status = status; }
@@ -100,11 +109,13 @@ public class Bill
 
     public void setRecurringDate(Integer recurringDate) { this.recurringDate = recurringDate; }
     public void setPaymentAmount(Double paymentAmount) { this.paymentAmount = paymentAmount; }
+    public void setAccount(Account account) { this.account = account; }
 
 
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "Bill{" +
                 "id=" + id +
                 ", status='" + status + '\'' +
