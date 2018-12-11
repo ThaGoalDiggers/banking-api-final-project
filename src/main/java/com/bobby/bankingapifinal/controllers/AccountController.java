@@ -2,6 +2,7 @@ package com.bobby.bankingapifinal.controllers;
 
 
 import com.bobby.bankingapifinal.domains.Account;
+import com.bobby.bankingapifinal.exceptions.ResourceNotFoundException;
 import com.bobby.bankingapifinal.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -12,6 +13,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class AccountController {
@@ -43,6 +45,7 @@ public class AccountController {
 
     @RequestMapping(value = "/accounts/{accountId}", method = RequestMethod.PUT)
     public ResponseEntity<?> updateAccount(@RequestBody Account account, @PathVariable Long accountId){
+        verifyAccount(accountId);
         accountService.updateAccount(account, accountId);
         HttpHeaders httpHeaders = new HttpHeaders();
         URI newAccountUri = ServletUriComponentsBuilder
@@ -56,6 +59,7 @@ public class AccountController {
 
     @RequestMapping(value = "/accounts/{accountId}", method = RequestMethod.GET)
     public ResponseEntity<?> getOneAccountById(@PathVariable Long accountId){
+        verifyAccount(accountId);
         Account account = accountService.getOneAccountById(accountId).orElse(null);
 
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -71,9 +75,12 @@ public class AccountController {
 
     @RequestMapping(value = "/accounts/{accountId}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteAccount(@PathVariable Long accountId){
+        verifyAccount(accountId);
         accountService.deleteAccount(accountId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+
 
     @RequestMapping(value = "/customers/{customerId}/accounts", method = RequestMethod.GET)
     public ResponseEntity<?> getAllAccountsByCustomer(@PathVariable Long customerId){
@@ -89,5 +96,11 @@ public class AccountController {
     }
 
 
+    protected void verifyAccount(Long accountId)  {
+        Optional<Account> account = accountService.getOneAccountById(accountId);
+        if(account.equals(Optional.empty())) {
+            throw new ResourceNotFoundException("Error fetching account");
+        }
+    }
 
 }

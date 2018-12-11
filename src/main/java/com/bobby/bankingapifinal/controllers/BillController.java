@@ -3,6 +3,7 @@ package com.bobby.bankingapifinal.controllers;
 
 
 import com.bobby.bankingapifinal.domains.Bill;
+import com.bobby.bankingapifinal.exceptions.ResourceNotFoundException;
 import com.bobby.bankingapifinal.services.BillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -14,7 +15,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-
+import java.util.Optional;
 
 
 @RestController
@@ -49,6 +50,7 @@ public class BillController
     @RequestMapping(value = "/bills/{billId}", method = RequestMethod.GET)
     public ResponseEntity<?> getOneBillById(@PathVariable Long billId)
     {
+        verifyBill(billId);
         Bill bill = billService.getOneBillById(billId).orElse(null);
         return new ResponseEntity<>(bill, HttpStatus.OK);
     }
@@ -83,6 +85,7 @@ public class BillController
     @RequestMapping(value = "/bills/{billId}", method = RequestMethod.PUT)
     public ResponseEntity<?> updateBill(@RequestBody Bill bill, @PathVariable Long billId)
     {
+        verifyBill(billId);
         billService.updateBill(bill, billId);
         return new ResponseEntity<>(bill, HttpStatus.OK);
     }
@@ -92,10 +95,17 @@ public class BillController
     @RequestMapping(value = "/bills/{billId}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteBill(@PathVariable Long billId)
     {
+        verifyBill(billId);
         billService.deleteBill(billId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
+    protected void verifyBill(Long billId)  {
+        Optional<Bill> account = billService.getOneBillById(billId);
+        if(account.equals(Optional.empty())) {
+            throw new ResourceNotFoundException("Error Fetching Bill");
+        }
+    }
 
 }
