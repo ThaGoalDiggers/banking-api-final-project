@@ -103,7 +103,7 @@ public class Bill
         this.recurringDate = recurringDate;
     }
 
-    
+
 
     public Long getId() { return id; }
     public BillStatus getStatus() { return status; }
