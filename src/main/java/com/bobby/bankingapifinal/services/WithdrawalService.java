@@ -2,6 +2,7 @@ package com.bobby.bankingapifinal.services;
 
 import com.bobby.bankingapifinal.domains.Account;
 import com.bobby.bankingapifinal.domains.Withdrawal;
+import com.bobby.bankingapifinal.repositories.AccountRepository;
 import com.bobby.bankingapifinal.repositories.WithdrawalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,14 @@ public class WithdrawalService {
     private WithdrawalRepository withdrawalRepository;
 
     @Autowired
+    private AccountRepository accountRepository;
+
+    @Autowired
     private  AccountService accountService;
+
+    public Double withdrawalMoney(Account account, Withdrawal withdrawal){
+        return account.getBalance() - withdrawal.getAmount();
+    }
 
     public Iterable<Withdrawal> getAllWithdrawals(){
         return withdrawalRepository.findAll();
@@ -32,14 +40,8 @@ public class WithdrawalService {
             if (acc.getId().equals(accountId)){
                 withdrawal.setAccount(acc);
                 withdrawalRepository.save(withdrawal);
-            }
-        }
-    }
-
-    public void updateWithdrawal(Withdrawal withdrawal, Long withdrawalId){
-        for (Withdrawal w : withdrawalRepository.findAll()){
-            if (w.getId().equals(withdrawalId)){
-                withdrawalRepository.save(withdrawal);
+                acc.setBalance(withdrawalMoney(acc, withdrawal));
+                accountRepository.save(acc);
             }
         }
     }

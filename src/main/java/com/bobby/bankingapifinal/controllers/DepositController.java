@@ -48,15 +48,6 @@ public class DepositController {
         return new ResponseEntity<>(deposit, httpHeaders, HttpStatus.CREATED);
     }
 
-
-    @RequestMapping(method = RequestMethod.PUT, value = "/deposits/{depositId}")
-    public ResponseEntity<?> updateDeposit(@RequestBody Deposit deposit, @PathVariable Long depositId){
-        depositService.updateDeposit(deposit, depositId);
-
-        return new ResponseEntity<>(deposit, HttpStatus.OK);
-    }
-
-
     @RequestMapping(method = RequestMethod.DELETE, value = "/deposits/{depositId}")
     public ResponseEntity<?> deleteDeposit(@PathVariable Long depositId){
         depositService.deleteDeposit(depositId);
