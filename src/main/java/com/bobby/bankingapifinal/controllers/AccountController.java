@@ -72,15 +72,7 @@ public class AccountController {
     @RequestMapping(value = "/accounts/{accountId}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteAccount(@PathVariable Long accountId){
         accountService.deleteAccount(accountId);
-
-        HttpHeaders httpHeaders = new HttpHeaders();
-        URI newAccountUri = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{accountId}")
-                .buildAndExpand()
-                .toUri();
-        httpHeaders.setLocation(newAccountUri);
-        return new ResponseEntity<>(null,httpHeaders,HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @RequestMapping(value = "/customers/{customerId}/accounts", method = RequestMethod.GET)
