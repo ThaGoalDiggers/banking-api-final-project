@@ -84,7 +84,26 @@ public class Bill
         this.paymentAmount = paymentAmount;
     }
 
+    public Bill(BillStatus status, String payee, String nickname, String upcomingPaymentDate,
+                Integer recurringDate, Double paymentAmount)
+    {
+        this.status = status;
+        this.payee = payee;
+        this.nickname = nickname;
+        this.upcomingPaymentDate = upcomingPaymentDate;
+        this.recurringDate = recurringDate;
+        this.paymentAmount = paymentAmount;
+    }
 
+    public Bill(BillStatus status) { this.status = status; }
+
+    public Bill(String upcomingPaymentDate, Integer recurringDate)
+    {
+        this.upcomingPaymentDate = upcomingPaymentDate;
+        this.recurringDate = recurringDate;
+    }
+
+    
 
     public Long getId() { return id; }
     public BillStatus getStatus() { return status; }
