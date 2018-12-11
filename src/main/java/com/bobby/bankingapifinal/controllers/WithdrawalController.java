@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -30,6 +31,12 @@ public class WithdrawalController {
         return new ResponseEntity<>(withdrawals, HttpStatus.OK);
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/accounts/{accountId}/withdrawals")
+    public ResponseEntity<List<Withdrawal>> getAllWithdrawalsByAccount(@PathVariable Long accountId){
+        List<Withdrawal> withdrawals = withdrawalService.getAllWithdrawalsByAccount(accountId);
+
+        return new ResponseEntity<>(withdrawals, HttpStatus.OK);
+    }
 
     @RequestMapping(method = RequestMethod.GET, value = "/withdrawals/{withdrawalId}")
     public ResponseEntity<?> getWithdrawalById(@PathVariable Long withdrawalId, Long accountId){
