@@ -52,15 +52,6 @@ public class WithdrawalController {
         return new ResponseEntity<>(withdrawal, httpHeaders, HttpStatus.CREATED);
     }
 
-
-    @RequestMapping(method = RequestMethod.PUT, value = "/withdrawals/{withdrawalId}")
-    public ResponseEntity<?> updateWithdrawal(@RequestBody Withdrawal withdrawal, @PathVariable Long withdrawalId){
-        withdrawalService.updateWithdrawal(withdrawal, withdrawalId);
-
-        return new ResponseEntity<>(withdrawal, HttpStatus.OK);
-    }
-
-
     @RequestMapping(method = RequestMethod.DELETE, value = "/withdrawals/{withdrawalId}")
     public ResponseEntity<?> deleteWithdrawal(@PathVariable Long withdrawalId){
         withdrawalService.deleteDeposit(withdrawalId);

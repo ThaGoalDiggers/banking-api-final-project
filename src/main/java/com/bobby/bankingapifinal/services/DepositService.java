@@ -46,14 +46,6 @@ public class DepositService {
         }
     }
 
-    public void updateDeposit(Deposit deposit, Long depositId){
-        for (Deposit d : depositRepository.findAll()){
-            if (d.getId().equals(depositId)){
-                depositRepository.save(deposit);
-            }
-        }
-    }
-
     public void deleteDeposit(Long id){
         depositRepository.deleteById(id);
     }

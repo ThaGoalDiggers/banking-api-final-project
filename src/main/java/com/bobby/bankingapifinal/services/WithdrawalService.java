@@ -46,14 +46,6 @@ public class WithdrawalService {
         }
     }
 
-    public void updateWithdrawal(Withdrawal withdrawal, Long withdrawalId){
-        for (Withdrawal w : withdrawalRepository.findAll()){
-            if (w.getId().equals(withdrawalId)){
-                withdrawalRepository.save(withdrawal);
-            }
-        }
-    }
-
     public void deleteDeposit(Long id){
         withdrawalRepository.deleteById(id);
     }
