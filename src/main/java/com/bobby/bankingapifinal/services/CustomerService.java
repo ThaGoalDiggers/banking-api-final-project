@@ -57,9 +57,6 @@ public class CustomerService {
         for(Customer c : customerRepository.findAll())
         {
             if(c.getId().equals(customerId)) {customerRepository.save(customer);}
-            else {
-                throw new ResourceNotFoundException("Error updating customer");
-            }
         }
 
     }

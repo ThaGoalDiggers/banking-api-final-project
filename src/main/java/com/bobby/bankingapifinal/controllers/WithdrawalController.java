@@ -1,6 +1,7 @@
 package com.bobby.bankingapifinal.controllers;
 
 import com.bobby.bankingapifinal.domains.Withdrawal;
+import com.bobby.bankingapifinal.dto.SuccessDetails;
 import com.bobby.bankingapifinal.exceptions.ResourceNotFoundException;
 import com.bobby.bankingapifinal.services.WithdrawalService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class WithdrawalController {
@@ -23,14 +25,15 @@ public class WithdrawalController {
     public ResponseEntity<Iterable<Withdrawal>> getAllWithdrawals(){
         Iterable<Withdrawal> withdrawals = withdrawalService.getAllWithdrawals();
 
-        return new ResponseEntity<>(withdrawals, HttpStatus.OK);
+        SuccessDetails successDetails = new SuccessDetails(HttpStatus.OK.value(),"Success",withdrawals);
+        return new ResponseEntity(successDetails, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/accounts/{accountId}/withdrawals")
     public ResponseEntity<List<Withdrawal>> getAllWithdrawalsByAccount(@PathVariable Long accountId){
         List<Withdrawal> withdrawals = withdrawalService.getAllWithdrawalsByAccount(accountId);
-
-        return new ResponseEntity<>(withdrawals, HttpStatus.OK);
+        SuccessDetails successDetails = new SuccessDetails(HttpStatus.OK.value(),"Success",withdrawals);
+        return new ResponseEntity(successDetails, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/withdrawals/{withdrawalId}")
@@ -38,7 +41,8 @@ public class WithdrawalController {
         verifyWithdrawal(withdrawalId);
         Withdrawal withdrawals = withdrawalService.getWithdrawalById(withdrawalId).orElse(null);
 
-        return new ResponseEntity<>(withdrawals, HttpStatus.OK);
+        SuccessDetails successDetails = new SuccessDetails(HttpStatus.OK.value(),"Success",withdrawalId);
+        return new ResponseEntity(successDetails, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/accounts/{accountId}/withdrawals")
@@ -52,7 +56,8 @@ public class WithdrawalController {
                 .buildAndExpand(withdrawal.getId())
                 .toUri();
         httpHeaders.setLocation(newBillUri);
-        return new ResponseEntity<>(withdrawal, httpHeaders, HttpStatus.CREATED);
+        SuccessDetails successDetails = new SuccessDetails(HttpStatus.OK.value(),"Success",withdrawal);
+        return new ResponseEntity(successDetails, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/withdrawals/{withdrawalId}")
@@ -60,25 +65,17 @@ public class WithdrawalController {
         verifyWithdrawal(withdrawalId);
         withdrawalService.deleteDeposit(withdrawalId);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        SuccessDetails successDetails = new SuccessDetails(HttpStatus.OK.value(),"Success");
+        return new ResponseEntity(successDetails, HttpStatus.OK);
 
     }
 
     protected void verifyWithdrawal(Long withdrawalId) throws ResourceNotFoundException {
-        Withdrawal withdrawal = withdrawalService.getWithdrawalById(withdrawalId).isPresent() ? withdrawalService.getWithdrawalById(withdrawalId).get() : null;
+        Optional<Withdrawal> withdrawal = withdrawalService.getWithdrawalById(withdrawalId);
         System.out.println(withdrawal);
         if(withdrawal == (null)){
             throw new ResourceNotFoundException("Error fetching Withdrawal");
         }
     }
 
-//    protected void verifyAccount(Long accountId) throws ResourceNotFoundException
-//    {
-//        Account account = accountServices.getOneAccount(accountId).isPresent() ? accountServices.getOneAccount(accountId).get() : null;
-//        System.out.println(account);
-//        if(account == (null))
-//        {
-//            throw new ResourceNotFoundException("Account with id " + accountId + " not found");
-//        }
-//    }
 }

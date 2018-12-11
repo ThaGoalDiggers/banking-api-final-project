@@ -3,6 +3,7 @@ package com.bobby.bankingapifinal.controllers;
 
 
 import com.bobby.bankingapifinal.domains.Bill;
+import com.bobby.bankingapifinal.dto.SuccessDetails;
 import com.bobby.bankingapifinal.exceptions.ResourceNotFoundException;
 import com.bobby.bankingapifinal.services.BillService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,8 @@ public class BillController
     public ResponseEntity<Iterable<Bill>> getAllBills()
     {
         Iterable<Bill> allBills = billService.getAllBills();
-        return new ResponseEntity<>(allBills, HttpStatus.OK);
+        SuccessDetails successDetails = new SuccessDetails(HttpStatus.OK.value(),"Success",allBills);
+        return new ResponseEntity(successDetails, HttpStatus.OK);
     }
 
 
@@ -42,7 +44,8 @@ public class BillController
     public ResponseEntity<Iterable<Bill>> getAllBillsByAccount(@PathVariable Long accountId)
     {
         Iterable<Bill> bills = billService.getAllBillsByAccount(accountId);
-        return new ResponseEntity<>(bills, HttpStatus.OK);
+        SuccessDetails successDetails = new SuccessDetails(HttpStatus.OK.value(),"Success",bills);
+        return new ResponseEntity(successDetails, HttpStatus.OK);
     }
 
 
@@ -52,7 +55,8 @@ public class BillController
     {
         verifyBill(billId);
         Bill bill = billService.getOneBillById(billId).orElse(null);
-        return new ResponseEntity<>(bill, HttpStatus.OK);
+        SuccessDetails successDetails = new SuccessDetails(HttpStatus.OK.value(),"Success",bill);
+        return new ResponseEntity(successDetails, HttpStatus.OK);
     }
 
 
@@ -61,7 +65,8 @@ public class BillController
     public ResponseEntity<?> getAllBillsByCustomer(@PathVariable Long customerId)
     {
         List<Bill> bills = billService.getAllBillsByCustomer(customerId);
-        return new ResponseEntity<>(bills, HttpStatus.OK);
+        SuccessDetails successDetails = new SuccessDetails(HttpStatus.OK.value(),"Success",bills);
+        return new ResponseEntity(successDetails, HttpStatus.OK);
     }
 
 
@@ -77,7 +82,8 @@ public class BillController
                 .buildAndExpand(bill.getId())
                 .toUri();
         httpHeaders.setLocation(newAccountUri);
-        return new ResponseEntity<>(bill,httpHeaders,HttpStatus.CREATED);
+        SuccessDetails successDetails = new SuccessDetails(HttpStatus.OK.value(),"Success",bill);
+        return new ResponseEntity(successDetails, HttpStatus.OK);
     }
 
 
@@ -87,7 +93,8 @@ public class BillController
     {
         verifyBill(billId);
         billService.updateBill(bill, billId);
-        return new ResponseEntity<>(bill, HttpStatus.OK);
+        SuccessDetails successDetails = new SuccessDetails(HttpStatus.OK.value(),"Success",bill);
+        return new ResponseEntity(successDetails, HttpStatus.OK);
     }
 
 
@@ -97,7 +104,8 @@ public class BillController
     {
         verifyBill(billId);
         billService.deleteBill(billId);
-        return new ResponseEntity<>(HttpStatus.OK);
+        SuccessDetails successDetails = new SuccessDetails(HttpStatus.OK.value(),"Success");
+        return new ResponseEntity(successDetails, HttpStatus.OK);
     }
 
 

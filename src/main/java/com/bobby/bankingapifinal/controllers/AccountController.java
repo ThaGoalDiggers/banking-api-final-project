@@ -2,6 +2,7 @@ package com.bobby.bankingapifinal.controllers;
 
 
 import com.bobby.bankingapifinal.domains.Account;
+import com.bobby.bankingapifinal.dto.SuccessDetails;
 import com.bobby.bankingapifinal.exceptions.ResourceNotFoundException;
 import com.bobby.bankingapifinal.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,8 @@ public class AccountController {
     @RequestMapping(value = "/accounts", method = RequestMethod.GET)
     public ResponseEntity<Iterable<Account>> getAllAccounts(){
         Iterable<Account> allAccounts = accountService.getAllAccounts();
-        return new ResponseEntity<>(allAccounts, HttpStatus.OK);
+        SuccessDetails successDetails = new SuccessDetails(HttpStatus.OK.value(),"Success",allAccounts);
+        return new ResponseEntity(successDetails, HttpStatus.OK);
     }
 
 
@@ -40,7 +42,8 @@ public class AccountController {
                 .buildAndExpand(account.getId())
                 .toUri();
         httpHeaders.setLocation(newAccountUri);
-        return new ResponseEntity<>(account,httpHeaders,HttpStatus.CREATED);
+        SuccessDetails successDetails = new SuccessDetails(HttpStatus.OK.value(),"Success",account);
+        return new ResponseEntity(successDetails, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/accounts/{accountId}", method = RequestMethod.PUT)
@@ -54,7 +57,8 @@ public class AccountController {
                 .buildAndExpand(account.getId())
                 .toUri();
         httpHeaders.setLocation(newAccountUri);
-        return new ResponseEntity<>(account,httpHeaders,HttpStatus.OK);
+        SuccessDetails successDetails = new SuccessDetails(HttpStatus.OK.value(),"Success",account);
+        return new ResponseEntity(successDetails, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/accounts/{accountId}", method = RequestMethod.GET)
@@ -69,7 +73,8 @@ public class AccountController {
                 .buildAndExpand(account.getId())
                 .toUri();
         httpHeaders.setLocation(newAccountUri);
-        return new ResponseEntity<>(account,httpHeaders,HttpStatus.OK);
+        SuccessDetails successDetails = new SuccessDetails(HttpStatus.OK.value(),"Success",account);
+        return new ResponseEntity(successDetails, HttpStatus.OK);
     }
 
 
@@ -77,13 +82,14 @@ public class AccountController {
     public ResponseEntity<?> deleteAccount(@PathVariable Long accountId){
         verifyAccount(accountId);
         accountService.deleteAccount(accountId);
-        return new ResponseEntity<>(HttpStatus.OK);
+        SuccessDetails successDetails = new SuccessDetails(HttpStatus.OK.value(),"Success");
+        return new ResponseEntity(successDetails, HttpStatus.OK);
     }
 
 
 
     @RequestMapping(value = "/customers/{customerId}/accounts", method = RequestMethod.GET)
-    public ResponseEntity<?> getAllAccountsByCustomer(@PathVariable Long customerId){
+    public ResponseEntity<?> getAllAccountsByCustomer(@PathVariable Long customerId) {
         List<Account> accounts = accountService.getAllAccountsByCustomer(customerId);
         HttpHeaders httpHeaders = new HttpHeaders();
         URI newAccountUri = ServletUriComponentsBuilder
@@ -92,7 +98,8 @@ public class AccountController {
                 .buildAndExpand(accounts)
                 .toUri();
         httpHeaders.setLocation(newAccountUri);
-        return new ResponseEntity<>(accounts,httpHeaders,HttpStatus.CREATED);
+        SuccessDetails successDetails = new SuccessDetails(HttpStatus.OK.value(), "Success", accounts);
+        return new ResponseEntity(successDetails, HttpStatus.OK);
     }
 
 
