@@ -2,6 +2,7 @@ package com.bobby.bankingapifinal.services;
 
 import com.bobby.bankingapifinal.domains.Account;
 import com.bobby.bankingapifinal.domains.Deposit;
+import com.bobby.bankingapifinal.repositories.AccountRepository;
 import com.bobby.bankingapifinal.repositories.DepositRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,14 @@ public class DepositService {
     private DepositRepository depositRepository;
 
     @Autowired
+    private AccountRepository accountRepository;
+
+    @Autowired
     private AccountService accountService;
+
+    public Double depositMoney(Account account, Deposit deposit){
+        return account.getBalance() + deposit.getAmount();
+    }
 
     public Iterable<Deposit> getAllDeposits(){
        return depositRepository.findAll();
@@ -32,6 +40,8 @@ public class DepositService {
             if (acc.getId().equals(accountId)){
                 deposit.setAccount(acc);
                 depositRepository.save(deposit);
+                acc.setBalance((depositMoney(acc, deposit)));
+                accountRepository.save(acc);
             }
         }
     }
