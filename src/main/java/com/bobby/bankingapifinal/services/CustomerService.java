@@ -2,6 +2,7 @@ package com.bobby.bankingapifinal.services;
 
 import com.bobby.bankingapifinal.domains.Account;
 import com.bobby.bankingapifinal.domains.Customer;
+import com.bobby.bankingapifinal.exceptions.ResourceNotFoundException;
 import com.bobby.bankingapifinal.repositories.AccountRepository;
 import com.bobby.bankingapifinal.repositories.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +56,10 @@ public class CustomerService {
 
         for(Customer c : customerRepository.findAll())
         {
-            if(c.getId().equals(customerId)) customerRepository.save(customer);
+            if(c.getId().equals(customerId)) {customerRepository.save(customer);}
+            else {
+                throw new ResourceNotFoundException("Error updating customer");
+            }
         }
 
     }

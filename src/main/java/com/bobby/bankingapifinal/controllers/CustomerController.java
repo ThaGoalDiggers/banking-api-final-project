@@ -79,6 +79,7 @@ public class CustomerController {
 
     @RequestMapping(value = "/customers/{customerId}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteCustomerById(@PathVariable Long customerId){
+        verifyCustomer(customerId);
         customerService.deleteCustomerById(customerId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -88,7 +89,7 @@ public class CustomerController {
     protected void verifyCustomer(Long customerId)  {
         Optional<Customer> customer = customerService.getOneCustomerById(customerId);
         if(customer.equals(Optional.empty())) {
-            throw new ResourceNotFoundException("Customer with id " + customerId + " not found");
+            throw new ResourceNotFoundException("Error fetching customer");
         }
     }
 

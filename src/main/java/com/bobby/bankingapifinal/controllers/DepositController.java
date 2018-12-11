@@ -1,6 +1,7 @@
 package com.bobby.bankingapifinal.controllers;
 
 import com.bobby.bankingapifinal.domains.Deposit;
+import com.bobby.bankingapifinal.exceptions.ResourceNotFoundException;
 import com.bobby.bankingapifinal.services.DepositService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -58,13 +59,13 @@ public class DepositController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-//    protected void verifyDeposit(Long depositId) throws ResourceNotFoundException {
-//        Deposit deposit = depositService.getDepositById(depositId).isPresent() ? depositService.getDepositById(depositId).get() : null;
-//        System.out.println(deposit);
-//        if(deposit == (null)){
-//            throw new ResourceNotFoundException("Deposit with id " + depositId + " not found.");
-//        }
-//    }
+    protected void verifyDeposit(Long depositId) throws ResourceNotFoundException {
+        Deposit deposit = depositService.getDepositById(depositId).isPresent() ? depositService.getDepositById(depositId).get() : null;
+        System.out.println(deposit);
+        if(deposit == (null)){
+            throw new ResourceNotFoundException("Error Fetching Deposit");
+        }
+    }
 
 //    protected void verifyAccount(Long accountId) throws ResourceNotFoundException
 //    {
