@@ -1,6 +1,7 @@
 package com.bobby.bankingapifinal.controllers;
 
 import com.bobby.bankingapifinal.domains.Customer;
+import com.bobby.bankingapifinal.dto.SuccessDetails;
 import com.bobby.bankingapifinal.exceptions.ResourceNotFoundException;
 import com.bobby.bankingapifinal.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,8 @@ public class CustomerController {
     @RequestMapping(value = "/customers", method = RequestMethod.GET)
     public ResponseEntity<Iterable<Customer>> getAllCustomers(){
         Iterable<Customer> allCustomers = customerService.getAllCustomers();
-            return new ResponseEntity<>(allCustomers, HttpStatus.OK);
+        SuccessDetails successDetails = new SuccessDetails(HttpStatus.OK.value(),"Success",allCustomers);
+            return new ResponseEntity(successDetails, HttpStatus.OK);
     }
 
 
@@ -47,13 +49,15 @@ public class CustomerController {
                 .toUri();
         responseHeaders.setLocation(newCustomerUri);
 
-        return new ResponseEntity<>(customer,responseHeaders, HttpStatus.OK);
+        SuccessDetails successDetails = new SuccessDetails(HttpStatus.OK.value(),"Success",customer);
+        return new ResponseEntity(successDetails, HttpStatus.OK);
     }
 
 
     //create customer
     @RequestMapping(value="/customers", method=RequestMethod.POST)
     public ResponseEntity<?> createCustomer( @RequestBody Customer customer){
+
         customerService.createCustomer(customer);
         HttpHeaders responseHeaders = new HttpHeaders();
         URI newCustomerUri = ServletUriComponentsBuilder
@@ -62,7 +66,10 @@ public class CustomerController {
                 .buildAndExpand(customer.getId())
                 .toUri();
         responseHeaders.setLocation(newCustomerUri);
-        return new ResponseEntity<>(customer, responseHeaders, HttpStatus.CREATED);
+
+
+        SuccessDetails successDetails = new SuccessDetails(HttpStatus.OK.value(),"Success",customer);
+        return new ResponseEntity(successDetails, HttpStatus.OK);
 
 
     }
@@ -72,7 +79,9 @@ public class CustomerController {
     public ResponseEntity<?> updateCustomerById(@RequestBody Customer customer, @PathVariable Long customerId){
         verifyCustomer(customerId);
         customerService.updateCustomerById(customer,customerId);
-      return new ResponseEntity<>(HttpStatus.OK);
+
+        SuccessDetails successDetails = new SuccessDetails(HttpStatus.OK.value(),"Success",customer);
+        return new ResponseEntity(successDetails, HttpStatus.OK);
     }
 
 
@@ -81,7 +90,8 @@ public class CustomerController {
     public ResponseEntity<?> deleteCustomerById(@PathVariable Long customerId){
         verifyCustomer(customerId);
         customerService.deleteCustomerById(customerId);
-        return new ResponseEntity<>(HttpStatus.OK);
+        SuccessDetails successDetails = new SuccessDetails(HttpStatus.OK.value(),"Success");
+        return new ResponseEntity(successDetails, HttpStatus.OK);
     }
 
 
