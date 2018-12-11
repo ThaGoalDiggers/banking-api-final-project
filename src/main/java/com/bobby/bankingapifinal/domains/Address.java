@@ -7,6 +7,7 @@ import javax.persistence.*;
 @Table(name = "ADDRESS_TABLE")
 public class Address {
     @Id
+    @GeneratedValue
     @Column(name="ADDRESS_ID")
     private Long id;
 
@@ -25,14 +26,10 @@ public class Address {
     @Column(name="ZIP")
     private String zip;
 
-//    @ManyToOne(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "CUSTOMER_ID")
-//    private Customer customer;
 
     public Address(){}
 
     public Address(String streetNumber, String streetName, String city, String state, String zip) {
-        this.id = id;
         this.streetNumber = streetNumber;
         this.streetName = streetName;
         this.city = city;
@@ -88,13 +85,6 @@ public class Address {
         this.zip = zip;
     }
 
-//    public Customer getCustomer() {
-//        return customer;
-//    }
-//
-//    public void setCustomer(Customer customer) {
-//        this.customer = customer;
-//    }
 
     @Override
     public String toString() {
