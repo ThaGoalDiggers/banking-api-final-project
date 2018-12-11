@@ -46,9 +46,11 @@ public class AccountService {
         }
     }
 
-    public void updateAccount(Account account, Long accountId){
-        for(Account acc : accountRepository.findAll()){
-            if(acc.getId().equals(accountId)) accountRepository.save(account);
+    public void updateAccount(Account account, Long accountId)
+    {
+        for(Account a : accountRepository.findAll())
+        {
+            if(a.getId().equals(accountId)) accountRepository.save(account);
         }
     }
 

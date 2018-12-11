@@ -1,8 +1,6 @@
 package com.bobby.bankingapifinal.controllers;
 
 import com.bobby.bankingapifinal.domains.Withdrawal;
-import com.bobby.bankingapifinal.exceptions.ResourceNotFoundException;
-import com.bobby.bankingapifinal.services.AccountService;
 import com.bobby.bankingapifinal.services.WithdrawalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -13,16 +11,12 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class WithdrawalController {
 
     @Autowired
     private WithdrawalService withdrawalService;
-
-    @Autowired
-    private AccountService accountService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/withdrawals")
     public ResponseEntity<Iterable<Withdrawal>> getAllWithdrawals(){
@@ -39,7 +33,7 @@ public class WithdrawalController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/withdrawals/{withdrawalId}")
-    public ResponseEntity<?> getWithdrawalById(@PathVariable Long withdrawalId, Long accountId){
+    public ResponseEntity<?> getWithdrawalById(@PathVariable Long withdrawalId){
         Withdrawal withdrawals = withdrawalService.getWithdrawalById(withdrawalId).orElse(null);
 
         return new ResponseEntity<>(withdrawals, HttpStatus.OK);
