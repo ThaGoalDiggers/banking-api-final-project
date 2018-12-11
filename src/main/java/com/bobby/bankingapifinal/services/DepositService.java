@@ -31,6 +31,12 @@ public class DepositService {
        return depositRepository.findAll();
     }
 
+    public List<Deposit> getAllDepositsByAccount(Long accountId) {
+        List<Deposit> deposits = new ArrayList<>();
+        depositRepository.findByAccountId(accountId).forEach(deposits::add);
+        return deposits;
+    }
+
     public Optional<Deposit> getDepositById(Long id){
         return depositRepository.findById(id);
     }

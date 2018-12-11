@@ -31,6 +31,12 @@ public class WithdrawalService {
         return withdrawalRepository.findAll();
     }
 
+    public List<Withdrawal> getAllWithdrawalsByAccount(Long accountId) {
+        List<Withdrawal> withdrawals = new ArrayList<>();
+        withdrawalRepository.findByAccountId(accountId).forEach(withdrawals::add);
+        return withdrawals;
+    }
+
     public Optional<Withdrawal> getWithdrawalById(Long id){
         return withdrawalRepository.findById(id);
     }
