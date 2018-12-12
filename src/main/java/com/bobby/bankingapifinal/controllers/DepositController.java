@@ -29,7 +29,7 @@ public class DepositController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/accounts/{accountId}/deposits")
-    public ResponseEntity<List<Deposit>> getAllWithdrawalsByAccount(@PathVariable Long accountId)throws ResourceNotFoundException{
+    public ResponseEntity<List<Deposit>> getAllDepositsByAccount(@PathVariable Long accountId)throws ResourceNotFoundException{
         List<Deposit> deposits = depositService.getAllDepositsByAccount(accountId);
 
         SuccessDetails successDetails = new SuccessDetails(HttpStatus.OK.value(),"Success",deposits);
