@@ -25,7 +25,7 @@ public class AccountController {
 
 
     @RequestMapping(value = "/accounts", method = RequestMethod.GET)
-    public ResponseEntity<Iterable<Account>> getAllAccounts(){
+    public ResponseEntity<Iterable<Account>> getAllAccounts()throws ResourceNotFoundException{
         Iterable<Account> allAccounts = accountService.getAllAccounts();
         SuccessDetails successDetails = new SuccessDetails(HttpStatus.OK.value(),"Success",allAccounts);
         return new ResponseEntity(successDetails, HttpStatus.OK);
@@ -33,7 +33,7 @@ public class AccountController {
 
 
     @RequestMapping(value = "/customers/{customerId}/accounts", method = RequestMethod.POST)
-    public ResponseEntity<?> createAccount(@RequestBody Account account, @PathVariable Long customerId){
+    public ResponseEntity<?> createAccount(@RequestBody Account account, @PathVariable Long customerId) throws ResourceNotFoundException{
         accountService.createAccount(account, customerId);
         HttpHeaders httpHeaders = new HttpHeaders();
         URI newAccountUri = ServletUriComponentsBuilder
@@ -89,7 +89,7 @@ public class AccountController {
 
 
     @RequestMapping(value = "/customers/{customerId}/accounts", method = RequestMethod.GET)
-    public ResponseEntity<?> getAllAccountsByCustomer(@PathVariable Long customerId) {
+    public ResponseEntity<?> getAllAccountsByCustomer(@PathVariable Long customerId) throws ResourceNotFoundException {
         List<Account> accounts = accountService.getAllAccountsByCustomer(customerId);
         HttpHeaders httpHeaders = new HttpHeaders();
         URI newAccountUri = ServletUriComponentsBuilder

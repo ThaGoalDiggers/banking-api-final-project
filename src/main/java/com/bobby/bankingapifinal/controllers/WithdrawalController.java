@@ -22,7 +22,7 @@ public class WithdrawalController {
     private WithdrawalService withdrawalService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/withdrawals")
-    public ResponseEntity<Iterable<Withdrawal>> getAllWithdrawals(){
+    public ResponseEntity<Iterable<Withdrawal>> getAllWithdrawals()throws ResourceNotFoundException{
         Iterable<Withdrawal> withdrawals = withdrawalService.getAllWithdrawals();
 
         SuccessDetails successDetails = new SuccessDetails(HttpStatus.OK.value(),"Success",withdrawals);
@@ -30,7 +30,7 @@ public class WithdrawalController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/accounts/{accountId}/withdrawals")
-    public ResponseEntity<List<Withdrawal>> getAllWithdrawalsByAccount(@PathVariable Long accountId){
+    public ResponseEntity<List<Withdrawal>> getAllWithdrawalsByAccount(@PathVariable Long accountId)throws ResourceNotFoundException{
         List<Withdrawal> withdrawals = withdrawalService.getAllWithdrawalsByAccount(accountId);
         SuccessDetails successDetails = new SuccessDetails(HttpStatus.OK.value(),"Success",withdrawals);
         return new ResponseEntity(successDetails, HttpStatus.OK);
@@ -46,7 +46,7 @@ public class WithdrawalController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/accounts/{accountId}/withdrawals")
-    public ResponseEntity<?> createWithdrawal(@RequestBody Withdrawal withdrawal, @PathVariable Long accountId){
+    public ResponseEntity<?> createWithdrawal(@RequestBody Withdrawal withdrawal, @PathVariable Long accountId)throws ResourceNotFoundException{
         withdrawalService.createWithdrawal(withdrawal, accountId);
 
         HttpHeaders httpHeaders = new HttpHeaders();

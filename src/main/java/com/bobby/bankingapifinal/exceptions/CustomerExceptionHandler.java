@@ -22,6 +22,13 @@ public class CustomerExceptionHandler {
         return  new ResponseEntity<>(errorDetail, null, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<?> handleErrorException( HttpServletRequest request) {
+        ErrorDetail errorDetail = new ErrorDetail();
+        errorDetail.setCode(HttpStatus.NOT_FOUND.value());
+        errorDetail.setMessage("Error");
+        return  new ResponseEntity<>(errorDetail, null, HttpStatus.NOT_FOUND);
+    }
 
 
 

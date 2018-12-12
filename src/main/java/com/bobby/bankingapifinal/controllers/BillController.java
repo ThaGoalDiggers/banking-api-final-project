@@ -31,7 +31,7 @@ public class BillController
 
 
     @RequestMapping(value = "/bills", method = RequestMethod.GET)
-    public ResponseEntity<Iterable<Bill>> getAllBills()
+    public ResponseEntity<Iterable<Bill>> getAllBills()throws ResourceNotFoundException
     {
         Iterable<Bill> allBills = billService.getAllBills();
         SuccessDetails successDetails = new SuccessDetails(HttpStatus.OK.value(),"Success",allBills);
@@ -41,7 +41,7 @@ public class BillController
 
 
     @RequestMapping(value = "/accounts/{accountId}/bills", method = RequestMethod.GET)
-    public ResponseEntity<Iterable<Bill>> getAllBillsByAccount(@PathVariable Long accountId)
+    public ResponseEntity<Iterable<Bill>> getAllBillsByAccount(@PathVariable Long accountId)throws ResourceNotFoundException
     {
         Iterable<Bill> bills = billService.getAllBillsByAccount(accountId);
         SuccessDetails successDetails = new SuccessDetails(HttpStatus.OK.value(),"Success",bills);
@@ -62,7 +62,7 @@ public class BillController
 
 
     @RequestMapping(value = "/customers/{customerId}/bills", method = RequestMethod.GET)
-    public ResponseEntity<?> getAllBillsByCustomer(@PathVariable Long customerId)
+    public ResponseEntity<?> getAllBillsByCustomer(@PathVariable Long customerId)throws ResourceNotFoundException
     {
         List<Bill> bills = billService.getAllBillsByCustomer(customerId);
         SuccessDetails successDetails = new SuccessDetails(HttpStatus.OK.value(),"Success",bills);
@@ -72,7 +72,7 @@ public class BillController
 
 
     @RequestMapping(value = "/accounts/{accountId}/bills", method = RequestMethod.POST)
-    public ResponseEntity<?> createBill(@RequestBody Bill bill, @PathVariable Long accountId)
+    public ResponseEntity<?> createBill(@RequestBody Bill bill, @PathVariable Long accountId)throws ResourceNotFoundException
     {
         billService.createBill(bill, accountId);
         HttpHeaders httpHeaders = new HttpHeaders();
