@@ -21,15 +21,16 @@ public class CustomerController {
     private CustomerService customerService;
 
     @RequestMapping(value = "/accounts/{accountId}/customer")
-    public ResponseEntity<?> getOneCustomerByAccountId(@PathVariable Long accountId){
+    public ResponseEntity<?> getOneCustomerByAccountId(@PathVariable Long accountId)throws ResourceNotFoundException{
         Customer customer = customerService.getOneCustomerByAccountId(accountId);
-        return new ResponseEntity<>(customer, HttpStatus.OK);
+        SuccessDetails successDetails = new SuccessDetails(HttpStatus.OK.value(),"Success",customer);
+        return new ResponseEntity(successDetails, HttpStatus.OK);
     }
 
 
    //Get all customers
     @RequestMapping(value = "/customers", method = RequestMethod.GET)
-    public ResponseEntity<Iterable<Customer>> getAllCustomers(){
+    public ResponseEntity<Iterable<Customer>> getAllCustomers()throws ResourceNotFoundException{
         Iterable<Customer> allCustomers = customerService.getAllCustomers();
         SuccessDetails successDetails = new SuccessDetails(HttpStatus.OK.value(),"Success",allCustomers);
             return new ResponseEntity(successDetails, HttpStatus.OK);
@@ -56,7 +57,7 @@ public class CustomerController {
 
     //create customer
     @RequestMapping(value="/customers", method=RequestMethod.POST)
-    public ResponseEntity<?> createCustomer( @RequestBody Customer customer){
+    public ResponseEntity<?> createCustomer( @RequestBody Customer customer)throws ResourceNotFoundException{
 
         customerService.createCustomer(customer);
         HttpHeaders responseHeaders = new HttpHeaders();
@@ -73,6 +74,7 @@ public class CustomerController {
 
 
     }
+
 
     //update specific customer
     @RequestMapping(value = "/customers/{customerId}", method = RequestMethod.PUT)

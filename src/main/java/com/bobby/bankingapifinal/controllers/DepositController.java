@@ -20,7 +20,7 @@ public class DepositController {
     private DepositService depositService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/deposits")
-    public ResponseEntity<Iterable<Deposit>> getAllDeposits(){
+    public ResponseEntity<Iterable<Deposit>> getAllDeposits()throws ResourceNotFoundException{
         Iterable<Deposit> deposits = depositService.getAllDeposits();
 
         SuccessDetails successDetails = new SuccessDetails(HttpStatus.OK.value(),"Success",deposits);
@@ -28,7 +28,7 @@ public class DepositController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/accounts/{accountId}/deposits")
-    public ResponseEntity<List<Deposit>> getAllWithdrawalsByAccount(@PathVariable Long accountId){
+    public ResponseEntity<List<Deposit>> getAllWithdrawalsByAccount(@PathVariable Long accountId)throws ResourceNotFoundException{
         List<Deposit> deposits = depositService.getAllDepositsByAccount(accountId);
 
         SuccessDetails successDetails = new SuccessDetails(HttpStatus.OK.value(),"Success",deposits);
@@ -36,7 +36,7 @@ public class DepositController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/deposits/{depositId}")
-    public ResponseEntity<?> getDepositById(@PathVariable Long depositId){
+    public ResponseEntity<?> getDepositById(@PathVariable Long depositId)throws ResourceNotFoundException{
         verifyDeposit(depositId);
         Deposit deposit = depositService.getDepositById(depositId).orElse(null);
         SuccessDetails successDetails = new SuccessDetails(HttpStatus.OK.value(),"Success",deposit);
@@ -44,7 +44,7 @@ public class DepositController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/accounts/{accountId}/deposits")
-    public ResponseEntity<?> createDeposit(@RequestBody Deposit deposit, @PathVariable Long accountId){
+    public ResponseEntity<?> createDeposit(@RequestBody Deposit deposit, @PathVariable Long accountId)throws ResourceNotFoundException{
         depositService.createDeposit(deposit, accountId);
 
         HttpHeaders httpHeaders = new HttpHeaders();
